@@ -837,6 +837,13 @@ def contactus_view(request):
     return render(request, 'hospital/contactus.html', {'form':sub})
 
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+def logout_view(request):
+    logout(request)
+    # куда перенаправлять после выхода — на главную:
+    return redirect('/')
 #---------------------------------------------------------------------------------
 #------------------------ ADMIN RELATED VIEWS END ------------------------------
 #---------------------------------------------------------------------------------
