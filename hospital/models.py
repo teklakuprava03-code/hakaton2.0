@@ -1,5 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+# hospital/models.py
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from chatrooms.models import PatientChatRoom
+
+
 
 
 
@@ -76,7 +82,10 @@ class PatientDischargeDetails(models.Model):
     OtherCharge=models.PositiveIntegerField(null=False)
     total=models.PositiveIntegerField(null=False)
 
-
-#Developed By : sumit kumar
-#facebook : fb.com/sumit.luv
-#Youtube :youtube.com/lazycoders
+@receiver(post_save, sender=Patient)
+def create_chat_room_for_patient(sender, instance, created, **kwargs):
+    if created:
+        PatientChatRoom.objects.create(
+            patient=instance,
+            name=f"Chat for patient {instance.id}"
+        )

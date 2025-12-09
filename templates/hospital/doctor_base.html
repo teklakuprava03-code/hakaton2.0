@@ -11,6 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="{% static 'js/jquery_csrf_ajax.js' %}"></script>
 
 
 
@@ -269,6 +270,118 @@
       }
     }
 
+        /* Chat widget */
+    #chat-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1050;
+    }
+
+    #chat-toggle-btn {
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      padding: 0;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    #chat-window {
+      width: 320px;
+      height: 420px;
+      display: none;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .chat-card {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background: #337AB7;
+      color: #fff;
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-header-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .chat-header-subtitle {
+      font-size: 0.75rem;
+      opacity: 0.8;
+    }
+
+    .chat-body {
+      flex: 1;
+      padding: 8px;
+      overflow-y: auto;
+      background: #f5f5f5;
+    }
+
+    .chat-footer {
+      padding: 6px;
+      border-top: 1px solid #ddd;
+      background: #fff;
+    }
+
+    .chat-message {
+      margin-bottom: 6px;
+      display: flex;
+    }
+
+    .chat-message.me {
+      justify-content: flex-end;
+    }
+
+    .chat-message.other {
+      justify-content: flex-start;
+    }
+
+    .chat-bubble {
+      max-width: 80%;
+      padding: 6px 10px;
+      border-radius: 16px;
+      font-size: 0.8rem;
+      line-height: 1.3;
+    }
+
+    .chat-bubble.me {
+      background: #337AB7;
+      color: white;
+      border-bottom-right-radius: 2px;
+    }
+
+    .chat-bubble.other {
+      background: #e4e6eb;
+      color: #111;
+      border-bottom-left-radius: 2px;
+    }
+
+    .chat-sender {
+      font-size: 0.7rem;
+      opacity: 0.7;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .chat-input-row {
+      display: flex;
+      gap: 4px;
+    }
+
+    .chat-input-row input {
+      font-size: 0.8rem;
+    }
   </style>
 </head>
 
@@ -695,6 +808,230 @@
         input.value = '';
       });
     })();
+  </script>
+
+  <!-- Chat widget -->
+  <div id="chat-widget" style="position: fixed; bottom: 20px; right: 20px;">
+      <button id="chat-open-btn" class="btn btn-primary">💬 Chat</button>
+
+      <div id="chat-window" style="display:none; width:300px; height:400px; background:white; border:1px solid #aaa;">
+          <div id="chat-messages" style="height:350px; overflow-y:scroll;"></div>
+          <input id="chat-input" type="text" class="form-control">
+          <button id="chat-send" class="btn btn-success btn-block">Send</button>
+      </div>
+  </div>
+
+  <script>
+  let roomId = null;
+  let socket = null;
+
+  function openChat(patientRoomId) {
+      roomId = patientRoomId;
+      document.getElementById("chat-window").style.display = "block";
+
+      // Load history
+      fetch(`/chat/patient/${roomId}/messages/`)
+          .then(r => r.json())
+          .then(data => {
+              let box = document.getElementById("chat-messages");
+              box.innerHTML = "";
+              data.forEach(m => {
+                  box.innerHTML += `<div><b>${m.sender}:</b> ${m.content}</div>`;
+              });
+          });
+
+      socket = new WebSocket(`ws://${window.location.host}/ws/chat/patient/${roomId}/`);
+
+      socket.onmessage = function(e){
+          let data = JSON.parse(e.data);
+          let box = document.getElementById("chat-messages");
+          box.innerHTML += `<div><b>${data.sender}:</b> ${data.message}</div>`;
+      };
+  }
+
+  document.getElementById("chat-open-btn").onclick = function(){
+      openChat(1); // TODO: substitute patient room ID
+  };
+
+  document.getElementById("chat-send").onclick = function(){
+      socket.send(JSON.stringify({
+          "message": document.getElementById("chat-input").value
+      }));
+      document.getElementById("chat-input").value = "";
+  };
+  </script>
+
+    <!-- Chat widget -->
+  <div id="chat-widget">
+    <button id="chat-toggle-btn" class="btn btn-primary">
+      💬
+    </button>
+
+    <div id="chat-window" class="card chat-card">
+      <div class="chat-header">
+        <div>
+          <div class="chat-header-title">Patient chat</div>
+          <div class="chat-header-subtitle" id="chat-header-subtitle">
+            No patient selected
+          </div>
+        </div>
+        <button type="button" id="chat-close-btn" class="btn btn-sm btn-light">
+          ✕
+        </button>
+      </div>
+
+      <div class="chat-body" id="chat-messages"></div>
+
+      <div class="chat-footer">
+        <div class="chat-input-row mb-1">
+          <input id="chat-input" type="text" class="form-control"
+                 placeholder="Type a message...">
+          <button id="chat-send" class="btn btn-success btn-sm">
+            Send
+          </button>
+        </div>
+
+        <!-- Invite block -->
+        <div class="chat-invite mt-1">
+          <div class="input-group input-group-sm">
+            <input type="text" id="invite-username"
+                   class="form-control"
+                   placeholder="Invite by username">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary" id="invite-btn" type="button">
+                Invite
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Текущий пользователь (для "me"/"other")
+    const currentUser = "{{ request.user.username|escapejs }}";
+
+    let roomId = null;
+    let socket = null;
+
+    function appendMessage(sender, text) {
+      const box = document.getElementById("chat-messages");
+      if (!box) return;
+
+      const cls = sender === currentUser ? 'me' : 'other';
+      const div = document.createElement('div');
+      div.className = `chat-message ${cls}`;
+      div.innerHTML = `
+        <div class="chat-bubble ${cls}">
+          <span class="chat-sender">${sender}</span>
+          <span class="chat-text">${text}</span>
+        </div>
+      `;
+      box.appendChild(div);
+      box.scrollTop = box.scrollHeight;
+    }
+
+    function loadHistory() {
+      if (!roomId) return;
+      fetch(`/chat/patient/${roomId}/messages/`)
+        .then(r => r.json())
+        .then(data => {
+          const box = document.getElementById("chat-messages");
+          box.innerHTML = "";
+          data.forEach(m => appendMessage(m.sender, m.content));
+        });
+    }
+
+    function openSocket() {
+      if (!roomId) return;
+      if (socket) {
+        socket.close();
+        socket = null;
+      }
+
+      const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+      socket = new WebSocket(`${protocol}://${window.location.host}/ws/chat/patient/${roomId}/`);
+
+      socket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        appendMessage(data.sender, data.message);
+      };
+
+      socket.onclose = function () {
+        // можно показать статус, если нужно
+      };
+    }
+
+    function openChat(patientRoomId, patientName) {
+      roomId = patientRoomId;
+      document.getElementById("chat-window").style.display = "block";
+      document.getElementById("chat-header-subtitle").innerText =
+        patientName ? `Patient: ${patientName}` : `Room #${roomId}`;
+
+      loadHistory();
+      openSocket();
+    }
+
+    function sendMessage() {
+      const input = document.getElementById("chat-input");
+      const text = input.value.trim();
+      if (!text || !socket || socket.readyState !== WebSocket.OPEN) return;
+
+      socket.send(JSON.stringify({message: text}));
+      input.value = "";
+    }
+
+    // Переключение виджета
+    document.getElementById("chat-toggle-btn").addEventListener("click", function () {
+      const win = document.getElementById("chat-window");
+      if (win.style.display === "none" || !win.style.display) {
+        if (!roomId) {
+          // временно используем roomId = 1, потом подставим нужного пациента
+          openChat(1, null);
+        } else {
+          win.style.display = "block";
+        }
+      } else {
+        win.style.display = "none";
+      }
+    });
+
+    document.getElementById("chat-close-btn").addEventListener("click", function () {
+      document.getElementById("chat-window").style.display = "none";
+    });
+
+    document.getElementById("chat-send").addEventListener("click", sendMessage);
+    document.getElementById("chat-input").addEventListener("keydown", function (e) {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // Invite
+    $('#invite-btn').on('click', function () {
+      if (!roomId) {
+        alert("Open a chat first");
+        return;
+      }
+      const username = $('#invite-username').val().trim();
+      if (!username) return;
+
+      $.post(`/chat/patient/${roomId}/invite/`, {username: username})
+        .done(function (data) {
+          alert(`User ${data.added} invited`);
+          $('#invite-username').val('');
+        })
+        .fail(function (xhr) {
+          let msg = "Error";
+          try {
+            const r = JSON.parse(xhr.responseText);
+            if (r.error) msg = r.error;
+          } catch (e) {}
+          alert(msg);
+        });
+    });
   </script>
 </body>
 

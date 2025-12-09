@@ -132,7 +132,8 @@ from django.urls import path
 from . import views
 from .utils.decorators import room_check_access
 from .ajax import chat
-
+from .views_patient_chat import get_messages
+from .views_patient_chat import get_messages, invite_to_patient_chat
 
 # === Обёртки вокруг ChatView, чтобы он не создавался при импорте ===
 
@@ -183,6 +184,12 @@ urlpatterns = [
     path('api/my-rooms/', views.my_patient_rooms, name='my-patient-rooms'),
     path('api/rooms/<int:room_id>/messages/', views.patient_chat_messages, name='patient-chat-messages'),
     path('api/rooms/<int:room_id>/invite/', views.invite_to_patient_chat, name='invite-to-patient-chat'),
+    path('patient/<int:room_id>/messages/', get_messages, name='patient_chat_messages'),
+    path(
+        'patient/<int:room_id>/invite/',
+        invite_to_patient_chat,
+        name='patient_chat_invite'
+    ),
 
     # AJAX-запросы
     path("get_messages/", get_messages_view, name="get_messages"),

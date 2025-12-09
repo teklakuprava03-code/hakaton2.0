@@ -1,7 +1,7 @@
-import json
-from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 from django.contrib.auth import get_user_model
+import json
+from channels.generic.websocket import AsyncWebsocketConsumer
 
 from .models import PatientChatRoom, PatientChatMessage
 
@@ -91,3 +91,41 @@ class PatientChatConsumer(AsyncWebsocketConsumer):
             sender=user,
             content=content,
         )
+
+
+
+class PatientChatConsumer(AsyncWebsocketConsumer):
+    async def connect(self):
+        self.room_id = self.scope['url_route']['kwargs']['room_id']
+        self.room_group = f"patient_chat_{self.room_id}"
+
+        await self.channel_layer.group_add(self.room_group, self.channel_name)
+        await self.accept()
+
+    async def disconnect(self, close_code):
+        await self.channel_layer.group_discard(self.room_group, self.channel_name)
+
+    async def receive(self, text_data):
+        data = json.loads(text_data)
+        msg = data["message"]
+        user = self.scope["user"]
+
+        # save message
+        room = await database_sync_to_async(PatientChatRoom.objects.get)(id=self.room_id)
+        await database_sync_to_async(PatientChatMessage.objects.create)(
+            room=room,
+            sender=user,
+            content=msg
+        )
+
+        await self.channel_layer.group_send(
+            self.room_group,
+            {
+                "type": "chat_message",
+                "message": msg,
+                "sender": user.username
+            }
+        )
+
+    async def chat_message(self, event):
+        await self.send(text_data=json.dumps(event))
