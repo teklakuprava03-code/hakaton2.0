@@ -180,6 +180,10 @@ urlpatterns = [
         name="set_guestname",
     ),
 
+    path('api/my-rooms/', views.my_patient_rooms, name='my-patient-rooms'),
+    path('api/rooms/<int:room_id>/messages/', views.patient_chat_messages, name='patient-chat-messages'),
+    path('api/rooms/<int:room_id>/invite/', views.invite_to_patient_chat, name='invite-to-patient-chat'),
+
     # AJAX-запросы
     path("get_messages/", get_messages_view, name="get_messages"),
     path("send_message/", send_message_view, name="send_message"),

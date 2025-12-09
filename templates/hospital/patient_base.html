@@ -332,11 +332,86 @@
       </div>
     </footer>
   </main>
-  <!--
-  developed By : sumit kumar
-  facebook : fb.com/sumit.luv
-  youtube : youtube.com/lazycoders
-  -->
+
+  <script>
+    (function(){
+      const toggle = document.getElementById('chat-toggle');
+      const win = document.getElementById('chat-window');
+      const closeBtn = document.getElementById('chat-close');
+      const messagesDiv = document.getElementById('chat-messages');
+      const input = document.getElementById('chat-message-input');
+      const sendBtn = document.getElementById('chat-send');
+
+      let socket = null;
+
+      function appendMessage(username, text) {
+        const el = document.createElement('div');
+        el.textContent = username + ": " + text;
+        messagesDiv.appendChild(el);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      function connectSocket() {
+        const roomId = window.currentPatientChatRoomId;
+        if (!roomId) {
+          console.warn("No chat room id for this page.");
+          return;
+        }
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          return;
+        }
+        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+        const url = `${protocol}://${window.location.host}/ws/patient-chat/${roomId}/`;
+        socket = new WebSocket(url);
+
+        socket.onopen = function(){
+          console.log("Chat WebSocket connected");
+        };
+        socket.onmessage = function(e){
+          const data = JSON.parse(e.data);
+          appendMessage(data.username, data.message);
+        };
+        socket.onclose = function(){
+          console.log("Chat WebSocket closed");
+        };
+      }
+
+      function sendMessage() {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+          return;
+        }
+        const text = input.value.trim();
+        if (!text) return;
+        socket.send(JSON.stringify({message: text}));
+        input.value = "";
+      }
+
+      toggle.addEventListener('click', function(){
+        if (win.style.display === 'none' || !win.style.display) {
+          win.style.display = 'flex';
+          connectSocket();
+        } else {
+          win.style.display = 'none';
+        }
+      });
+
+      closeBtn.addEventListener('click', function(){
+        win.style.display = 'none';
+      });
+
+      sendBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        sendMessage();
+      });
+
+      input.addEventListener('keydown', function(e){
+        if (e.key === "Enter") {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+    })();
+  </script>
 
 </body>
 

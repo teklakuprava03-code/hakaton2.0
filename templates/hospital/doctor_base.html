@@ -309,6 +309,54 @@
 
     </ul>
   </nav>
+
+      <!-- CHAT WIDGET START -->
+    <div id="pc-widget" style="
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 320px;
+        max-height: 420px;
+        background: #fff;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        z-index: 9999;
+    ">
+      <div style="background:#337AB7; color:#fff; padding:8px; display:flex; align-items:center; justify-content:space-between;">
+        <div>
+          <strong>Patient chat</strong><br>
+          <select id="pc-patient-select" style="color:#000; font-size:12px; max-width:200px;"></select>
+        </div>
+        <button id="pc-close-btn" style="border:none; background:transparent; color:#fff; font-size:18px; line-height:1;">×</button>
+      </div>
+      <div id="pc-messages" style="padding:8px; flex:1; overflow-y:auto; font-size:13px; background:#f7f7f7;"></div>
+      <form id="pc-send-form" style="display:flex; border-top:1px solid #ddd;">
+        <input id="pc-input" type="text" class="form-control" placeholder="Type a message..."
+               style="border:none; border-radius:0;">
+        <button type="submit" class="btn btn-primary" style="border-radius:0;">Send</button>
+      </form>
+    </div>
+
+    <!-- FAB button -->
+    <button id="pc-fab" style="
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        border:none;
+        background:#337AB7;
+        color:#fff;
+        font-size:26px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.3);
+        z-index: 9998;
+    ">💬</button>
+    <!-- CHAT WIDGET END -->
+
   <main>
     <!-- nav start -->
     <div class="bs-example">
@@ -352,12 +400,303 @@
       </div>
     </footer>
   </main>
-  <!-- partial -->
+
+  <div id="chat-widget">
+    <div id="chat-toggle">Chat</div>
+    <div id="chat-window" style="display: none;">
+      <div id="chat-header">
+        <span id="chat-title">Patient Chat</span>
+        <button id="chat-close" type="button">×</button>
+      </div>
+      <div id="chat-messages"></div>
+      <div id="chat-input">
+        <input type="text" id="chat-message-input" placeholder="Type a message...">
+        <button id="chat-send" type="button">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    #chat-widget {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      font-size: 14px;
+    }
+    #chat-toggle {
+      background: #337AB7;
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+    #chat-window {
+      width: 320px;
+      height: 420px;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+      display: flex;
+      flex-direction: column;
+      font-size: 14px;
+    }
+    #chat-header {
+      background: #337AB7;
+      color: #fff;
+      padding: 6px 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 8px 8px 0 0;
+    }
+    #chat-messages {
+      flex: 1;
+      padding: 8px;
+      overflow-y: auto;
+      background: #f7f7f7;
+    }
+    #chat-input {
+      display: flex;
+      border-top: 1px solid #ddd;
+    }
+    #chat-message-input {
+      flex: 1;
+      border: none;
+      padding: 8px;
+    }
+    #chat-send {
+      border: none;
+      background: #337AB7;
+      color: #fff;
+      padding: 0 12px;
+    }
+  </style>
+
+  <script>
+    (function(){
+      const toggle = document.getElementById('chat-toggle');
+      const win = document.getElementById('chat-window');
+      const closeBtn = document.getElementById('chat-close');
+      const messagesDiv = document.getElementById('chat-messages');
+      const input = document.getElementById('chat-message-input');
+      const sendBtn = document.getElementById('chat-send');
+
+      let socket = null;
+
+      function appendMessage(username, text) {
+        const el = document.createElement('div');
+        el.textContent = username + ": " + text;
+        messagesDiv.appendChild(el);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      }
+
+      function connectSocket() {
+        const roomId = window.currentPatientChatRoomId;
+        if (!roomId) {
+          console.warn("No chat room id for this page.");
+          return;
+        }
+        if (socket && socket.readyState === WebSocket.OPEN) {
+          return;
+        }
+        const protocol = window.location.protocol === "https:" ? "wss" : "ws";
+        const url = `${protocol}://${window.location.host}/ws/patient-chat/${roomId}/`;
+        socket = new WebSocket(url);
+
+        socket.onopen = function(){
+          console.log("Chat WebSocket connected");
+        };
+        socket.onmessage = function(e){
+          const data = JSON.parse(e.data);
+          appendMessage(data.username, data.message);
+        };
+        socket.onclose = function(){
+          console.log("Chat WebSocket closed");
+        };
+      }
+
+      function sendMessage() {
+        if (!socket || socket.readyState !== WebSocket.OPEN) {
+          return;
+        }
+        const text = input.value.trim();
+        if (!text) return;
+        socket.send(JSON.stringify({message: text}));
+        input.value = "";
+      }
+
+      toggle.addEventListener('click', function(){
+        if (win.style.display === 'none' || !win.style.display) {
+          win.style.display = 'flex';
+          connectSocket();
+        } else {
+          win.style.display = 'none';
+        }
+      });
+
+      closeBtn.addEventListener('click', function(){
+        win.style.display = 'none';
+      });
+
+      sendBtn.addEventListener('click', function(e){
+        e.preventDefault();
+        sendMessage();
+      });
+
+      input.addEventListener('keydown', function(e){
+        if (e.key === "Enter") {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+    })();
+  </script>
+
+  <script>
+    (function() {
+      let chatSocket = null;
+      let currentRoomId = null;
+
+      const widget = document.getElementById('pc-widget');
+      const fab = document.getElementById('pc-fab');
+      const closeBtn = document.getElementById('pc-close-btn');
+      const messagesBox = document.getElementById('pc-messages');
+      const patientSelect = document.getElementById('pc-patient-select');
+      const form = document.getElementById('pc-send-form');
+      const input = document.getElementById('pc-input');
+
+      function appendMessage(msg) {
+        const wrap = document.createElement('div');
+        wrap.style.marginBottom = '4px';
+
+        const me = msg.is_me || (msg.sender_id && msg.sender_id === {{ request.user.id|default:"0" }});
+
+        wrap.innerHTML = `
+          <div style="text-align:${me ? 'right' : 'left'};">
+            <div style="
+                display:inline-block;
+                padding:4px 8px;
+                border-radius:8px;
+                background:${me ? '#337ab7' : '#fff'};
+                color:${me ? '#fff' : '#000'};
+                max-width:80%;
+                word-wrap:break-word;
+            ">
+              <small style="font-weight:bold;">${me ? 'Me' : (msg.sender || '')}</small><br>
+              ${msg.content}
+            </div>
+          </div>
+        `;
+        messagesBox.appendChild(wrap);
+        messagesBox.scrollTop = messagesBox.scrollHeight;
+      }
+
+      function connectSocket() {
+        if (!currentRoomId) return;
+
+        if (chatSocket) {
+          chatSocket.close();
+        }
+
+        const protocol = window.location.protocol === 'https:' ? 'wss' : 'ws';
+        const url = `${protocol}://${window.location.host}/ws/patient-chat/${currentRoomId}/`;
+
+        chatSocket = new WebSocket(url);
+
+        chatSocket.onmessage = function(e) {
+          try {
+            const data = JSON.parse(e.data);
+            appendMessage({
+              id: data.id,
+              sender: data.sender,
+              content: data.content,
+              created_at: data.created_at,
+              sender_id: data.sender_id,
+              is_me: data.sender_id === {{ request.user.id|default:"0" }},
+            });
+          } catch (err) {
+            console.error('Bad message', err);
+          }
+        };
+
+        chatSocket.onclose = function(e) {
+          console.log('Chat socket closed');
+        };
+      }
+
+      function loadHistory() {
+        if (!currentRoomId) return;
+        fetch(`/chat/api/rooms/${currentRoomId}/messages/`, {
+          credentials: 'same-origin',
+        })
+          .then(r => r.json())
+          .then(data => {
+            messagesBox.innerHTML = '';
+            (data.messages || []).forEach(m => appendMessage(m));
+          })
+          .catch(err => console.error(err));
+      }
+
+      function loadRoomsAndInit() {
+        fetch('/chat/api/my-rooms/', { credentials: 'same-origin' })
+          .then(r => r.json())
+          .then(data => {
+            const rooms = data.rooms || [];
+            patientSelect.innerHTML = '';
+
+            rooms.forEach(room => {
+              const opt = document.createElement('option');
+              opt.value = room.id;
+              opt.textContent = room.patient_name;
+              patientSelect.appendChild(opt);
+            });
+
+            if (rooms.length > 0) {
+              currentRoomId = rooms[0].id;
+              patientSelect.value = currentRoomId;
+              loadHistory();
+              connectSocket();
+            } else {
+              currentRoomId = null;
+            }
+          })
+          .catch(err => console.error(err));
+      }
+
+      // события UI
+      fab.addEventListener('click', function() {
+        widget.style.display = 'flex';
+        fab.style.display = 'none';
+        loadRoomsAndInit();
+      });
+
+      closeBtn.addEventListener('click', function() {
+        widget.style.display = 'none';
+        fab.style.display = 'block';
+        if (chatSocket) {
+          chatSocket.close();
+          chatSocket = null;
+        }
+      });
+
+      patientSelect.addEventListener('change', function() {
+        currentRoomId = this.value;
+        loadHistory();
+        connectSocket();
+      });
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text || !chatSocket || chatSocket.readyState !== WebSocket.OPEN) return;
+
+        chatSocket.send(JSON.stringify({message: text}));
+        input.value = '';
+      });
+    })();
+  </script>
 </body>
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+
 
 </html>

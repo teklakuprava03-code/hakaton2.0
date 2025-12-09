@@ -679,7 +679,38 @@ def delete_appointment_view(request,pk):
     appointments=zip(appointments,patients)
     return render(request,'hospital/doctor_delete_appointment.html',{'appointments':appointments,'doctor':doctor})
 
+from chatrooms.models import PatientChatRoom
 
+@login_required(login_url='doctorlogin')
+@user_passes_test(is_doctor)
+def doctor_dashboard_view(request):
+    doctor = models.Doctor.objects.get(user_id=request.user.id)
+
+    patientcount = models.Patient.objects.all().filter(status=True, assignedDoctorId=request.user.id).count()
+    appointmentcount = models.Appointment.objects.all().filter(status=True, doctorId=request.user.id).count()
+    patientdischarged = models.PatientDischargeDetails.objects.all().distinct().filter(assignedDoctorName=request.user.first_name).count()
+
+    appointments_qs = models.Appointment.objects.all().filter(status=True, doctorId=request.user.id).order_by('-id')
+    patientid = [a.patientId for a in appointments_qs]
+    patients = models.Patient.objects.all().filter(status=True, user_id__in=patientid).order_by('-id')
+    appointments = zip(appointments_qs, patients)
+
+    # берём первого пациента, если есть, и под него чат
+    chat_room_id = None
+    first_patient = models.Patient.objects.filter(status=True, assignedDoctorId=request.user.id).first()
+    if first_patient:
+        room, _ = PatientChatRoom.objects.get_or_create(patient=first_patient)
+        chat_room_id = room.id
+
+    mydict = {
+        'patientcount': patientcount,
+        'appointmentcount': appointmentcount,
+        'patientdischarged': patientdischarged,
+        'appointments': appointments,
+        'doctor': doctor,
+        'chat_room_id': chat_room_id,
+    }
+    return render(request, 'hospital/doctor_dashboard.html', context=mydict)
 
 #---------------------------------------------------------------------------------
 #------------------------ DOCTOR RELATED VIEWS END ------------------------------
@@ -807,6 +838,31 @@ def patient_discharge_view(request):
         }
     return render(request,'hospital/patient_discharge.html',context=patientDict)
 
+    from chatrooms.models import PatientChatRoom
+
+from chatrooms.models import PatientChatRoom
+
+@login_required(login_url='patientlogin')
+@user_passes_test(is_patient)
+def patient_dashboard_view(request):
+    patient = models.Patient.objects.get(user_id=request.user.id)
+    doctor = models.Doctor.objects.get(user_id=patient.assignedDoctorId)
+
+    # находим/создаём комнату
+    room, _ = PatientChatRoom.objects.get_or_create(patient=patient)
+
+    mydict = {
+        'patient': patient,
+        'doctorName': doctor.get_name,
+        'doctorMobile': doctor.mobile,
+        'doctorAddress': doctor.address,
+        'symptoms': patient.symptoms,
+        'doctorDepartment': doctor.department,
+        'admitDate': patient.admitDate,
+        'chat_room_id': room.id,
+        'doctor': doctor,  # понадобится для doctor_base, если пациент смотрит?
+    }
+    return render(request, 'hospital/patient_dashboard.html', context=mydict)
 
 #------------------------ PATIENT RELATED VIEWS END ------------------------------
 #---------------------------------------------------------------------------------
