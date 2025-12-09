@@ -4,6 +4,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
 from hospital.models import Patient
+from django.conf import settings
 
 class Room(models.Model):
     name = models.CharField(max_length=64, unique=True)
