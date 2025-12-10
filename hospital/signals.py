@@ -1,35 +1,37 @@
+# hospital/signals.py
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from django.contrib.auth.models import User
+from django.apps import apps
 
 from .models import Patient
-from chatrooms.models import PatientChatRoom
 
 
 @receiver(post_save, sender=Patient)
-def create_patient_chat_room(sender, instance, created, **kwargs):
-    """
-    При создании пациента создаём ему чат-комнату
-    и добавляем туда назначенного доктора (если есть),
-    и самого пользователя-пациента (если связь понятна).
-    """
+def create_chat_room_for_patient(sender, instance, created, **kwargs):
     if not created:
         return
 
-    room = PatientChatRoom.objects.create(patient=instance)
+    # Берём модель через apps.get_model, чтобы НЕ было циклического импорта
+    PatientChatRoom = apps.get_model('chatrooms', 'PatientChatRoom')
 
-    # пациент
-    if instance.user_id:
-        try:
-            user = User.objects.get(id=instance.user_id)
-            room.participants.add(user)
-        except User.DoesNotExist:
-            pass
+    # Если нужно поле name — оно должно быть в модели.
+    # Если в модели нет name — убери этот аргумент.
+    PatientChatRoom.objects.create(
+        patient=instance,
+        # раскомментируй, только если в модели есть поле name:
+        # name=f"Chat for patient {instance.id}"
+    )
 
-    # врач
-    if instance.assignedDoctorId:
-        try:
-            doctor_user = User.objects.get(id=instance.assignedDoctorId)
-            room.participants.add(doctor_user)
-        except User.DoesNotExist:
-            pass
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from .models import Patient
+from django.apps import apps
+
+@receiver(post_save, sender=Patient)
+def create_chat_room_for_patient(sender, instance, created, **kwargs):
+    if created:
+        PatientChatRoom = apps.get_model('chatrooms', 'PatientChatRoom')
+        PatientChatRoom.objects.create(
+            patient=instance,
+            name=f"Chat for patient {instance.id}"
+        )

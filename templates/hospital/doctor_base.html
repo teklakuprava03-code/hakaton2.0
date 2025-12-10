@@ -12,6 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script src="{% static 'js/jquery_csrf_ajax.js' %}"></script>
+  <script src="{% static 'js/patient_chat.js' %}"></script>
 
 
 
@@ -1033,6 +1034,8 @@
         });
     });
   </script>
+  {% include 'chatrooms/patient_chat_widget.html' %}
+
 </body>
 
 

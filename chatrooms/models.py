@@ -3,12 +3,14 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.urls import reverse
+from django.db import models
+from django.conf import settings
 
-from hospital.models import Patient
+User = settings.AUTH_USER_MODEL
 
 
 class Room(models.Model):
-    name = models.CharField(max_length=64, unique=True)
+    name = models.CharField(max_length=250, unique=True)
     slug = models.SlugField()
     description = models.TextField()
     subscribers = models.ManyToManyField(User, blank=True)
@@ -54,47 +56,34 @@ class Message(models.Model):
 
 
 class PatientChatRoom(models.Model):
-    """
-    Отдельная комната чата для одного пациента.
-    В ней могут участвовать несколько пользователей (доктора, медсёстры и т.п.)
-    """
-
+    # Один чат на одного пациента
     patient = models.OneToOneField(
-        Patient,
+        'hospital.Patient',
         on_delete=models.CASCADE,
-        related_name="chat_room",
+        related_name='chat_room'
     )
-    name = models.CharField(max_length=255)
+    # Просто человеко-читаемое имя комнаты
+    name = models.CharField(max_length=255, blank=True)
+    # Участники чата (врачи, медсёстры и т.д.)
     participants = models.ManyToManyField(
-        User,
-        related_name="patient_chat_rooms",
+        settings.AUTH_USER_MODEL,
+        related_name='patient_chat_rooms',
         blank=True,
     )
+    created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Chat for patient {self.patient.get_name if hasattr(self.patient, 'get_name') else self.patient}"
+        return self.name or f"Chat for patient {self.patient_id}"
 
 
 class PatientChatMessage(models.Model):
-    """
-    Сообщение в чате по пациенту.
-    """
-
-    room = models.ForeignKey(
-        PatientChatRoom,
-        on_delete=models.CASCADE,
-        related_name="messages",
-    )
-    sender = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="patient_chat_messages",
-    )
-    content = models.TextField()
-    timestamp = models.DateTimeField(auto_now_add=True)
+    room = models.ForeignKey("chatrooms.PatientChatRoom", on_delete=models.CASCADE, related_name="messages", null=True, blank=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, null=True, blank=True)
+    content = models.TextField(null=True, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     class Meta:
-        ordering = ["timestamp"]
+        ordering = ['timestamp']
 
     def __str__(self):
-        return f"{self.sender} @ {self.timestamp}: {self.content[:30]}"
+        return f"{self.user} in room {self.room_id} at {self.timestamp}"

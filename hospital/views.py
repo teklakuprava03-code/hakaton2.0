@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required,user_passes_test
 from datetime import datetime,timedelta,date
 from django.conf import settings
 from django.db.models import Q
+from django.contrib.auth import logout
 
 # Create your views here.
 def home_view(request):
@@ -102,29 +103,51 @@ def patient_signup_view(request):
 
 #-----------for checking user is doctor , patient or admin(by sumit)
 def is_admin(user):
-    return user.groups.filter(name='ADMIN').exists()
+    # считаем админом как суперпользователя, так и пользователя из группы ADMIN
+    return user.is_superuser or user.groups.filter(name='ADMIN').exists()
+
 def is_doctor(user):
     return user.groups.filter(name='DOCTOR').exists()
+
 def is_patient(user):
     return user.groups.filter(name='PATIENT').exists()
 
-
 #---------AFTER ENTERING CREDENTIALS WE CHECK WHETHER USERNAME AND PASSWORD IS OF ADMIN,DOCTOR OR PATIENT
 def afterlogin_view(request):
+    # если пользователь не залогинен и каким-то образом попал на /afterlogin
+    if not request.user.is_authenticated:
+        return redirect('/')
+
+    # админ (суперпользователь или из группы ADMIN)
     if is_admin(request.user):
         return redirect('admin-dashboard')
-    elif is_doctor(request.user):
-        accountapproval=models.Doctor.objects.all().filter(user_id=request.user.id,status=True)
-        if accountapproval:
+
+    # доктор
+    if is_doctor(request.user):
+        accountapproval = models.Doctor.objects.filter(
+            user_id=request.user.id,
+            status=True
+        )
+        if accountapproval.exists():
             return redirect('doctor-dashboard')
         else:
-            return render(request,'hospital/doctor_wait_for_approval.html')
-    elif is_patient(request.user):
-        accountapproval=models.Patient.objects.all().filter(user_id=request.user.id,status=True)
-        if accountapproval:
+            return render(request, 'hospital/doctor_wait_for_approval.html')
+
+    # пациент
+    if is_patient(request.user):
+        accountapproval = models.Patient.objects.filter(
+            user_id=request.user.id,
+            status=True
+        )
+        if accountapproval.exists():
             return redirect('patient-dashboard')
         else:
-            return render(request,'hospital/patient_wait_for_approval.html')
+            return render(request, 'hospital/patient_wait_for_approval.html')
+
+    # сюда попадаем, если пользователь залогинен,
+    # но не состоит ни в одной из ролей (битый аккаунт)
+    logout(request)
+    return redirect('/')
 
 
 

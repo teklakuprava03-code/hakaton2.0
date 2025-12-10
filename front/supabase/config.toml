@@ -1,0 +1,4 @@
+project_id = "dcccczgpsuqylusoehbl"
+
+[functions.summarize-council]
+verify_jwt = true

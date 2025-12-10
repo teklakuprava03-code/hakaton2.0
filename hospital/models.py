@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 # hospital/models.py
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from chatrooms.models import PatientChatRoom
+from django.apps import apps
+
 
 
 
@@ -84,8 +85,13 @@ class PatientDischargeDetails(models.Model):
 
 @receiver(post_save, sender=Patient)
 def create_chat_room_for_patient(sender, instance, created, **kwargs):
-    if created:
-        PatientChatRoom.objects.create(
-            patient=instance,
-            name=f"Chat for patient {instance.id}"
-        )
+    if not created:
+        return
+
+    # берём модель из приложения chatrooms без прямого импорта
+    PatientChatRoom = apps.get_model('chatrooms', 'PatientChatRoom')
+
+    # создаём комнату для пациента
+    PatientChatRoom.objects.create(
+        patient=instance
+    )

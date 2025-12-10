@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-        'hospital',
+    'hospital.apps.HospitalConfig',
         'widget_tweaks',
     'chatrooms',
 ]
