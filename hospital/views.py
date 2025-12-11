@@ -9,6 +9,9 @@ from datetime import datetime,timedelta,date
 from django.conf import settings
 from django.db.models import Q
 from django.contrib.auth import logout
+from django.http import JsonResponse
+from .models import Patient
+from django.contrib.auth.decorators import login_required, user_passes_test
 
 # Create your views here.
 def home_view(request):
@@ -926,6 +929,28 @@ def logout_view(request):
 #---------------------------------------------------------------------------------
 #------------------------ ADMIN RELATED VIEWS END ------------------------------
 #---------------------------------------------------------------------------------
+
+# например, файл hospital/api_views.py
+
+
+def is_doctor(user):
+    return user.groups.filter(name='DOCTOR').exists()
+
+@login_required
+@user_passes_test(is_doctor)
+def api_patients(request):
+    patients = Patient.objects.filter(status=True, assignedDoctorId=request.user.id)
+    data = [
+        {
+            "id": p.id,
+            "name": p.get_name,
+            "mobile": p.mobile,
+            "address": p.address,
+            "symptoms": p.symptoms,
+        }
+        for p in patients
+    ]
+    return JsonResponse(data, safe=False)
 
 
 

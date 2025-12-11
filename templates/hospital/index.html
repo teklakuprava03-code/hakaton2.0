@@ -1,80 +1,147 @@
-{% extends 'hospital/homebase.html' %}
-{% load static %}
-<!--
-written By : sumit kumar
-facebook : fb.com/sumit.luv
--->
-
-
-{% block content %}
-
-
+<!DOCTYPE html>
+<html lang="ru">
 <head>
-  <style media="screen">
-    .jumbotron {
-      margin-top: 0px;
-      margin-bottom: 0px;
-      background-image: url('{% static "images/bg.jpg" %}');
-      background-size: cover;
-      background-repeat: no-repeat;
-    }
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MedAI Platform</title>
 
-    .jumbotron h5,
-    h3 {
-      text-align: center;
-    }
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(180deg, #f5f9ff 0%, #eef4ff 100%);
+            color: #1a1a1a;
+        }
 
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            text-align: center;
+        }
 
-    .alert {
-      margin: 0px;
-    }
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
 
+        .subtitle {
+            color: #626d83;
+            font-size: 20px;
+            margin-bottom: 50px;
+        }
 
+        .cards {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
 
-    .glow {
-      font-size: 50px;
-      color: white;
-      text-align: center;
-      -webkit-animation: glow 1s ease-in-out infinite alternate;
-      -moz-animation: glow 1s ease-in-out infinite alternate;
-      animation: glow 1s ease-in-out infinite alternate;
-    }
+        .card {
+            background: white;
+            width: 300px;
+            padding: 35px 25px;
+            border-radius: 18px;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+            transition: all 0.2s ease;
+        }
 
-    @-webkit-keyframes glow {
-      from {
-        text-shadow: 0 0 10px #eeeeee, 0 0 20px #000000, 0 0 30px #000000, 0 0 40px #000000, 0 0 50px #9554b3, 0 0 60px #9554b3, 0 0 70px #9554b3;
-      }
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+        }
 
-      to {
-        text-shadow: 0 0 20px #eeeeee, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6, 0 0 70px #ff4da6, 0 0 80px #ff4da6;
-      }
-    }
-  </style>
+        .icon-circle {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #2e6ff2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+        }
+
+        .icon-circle img {
+            width: 35px;
+            height: 35px;
+        }
+
+        .card-title {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .card-subtitle {
+            color: #7c869c;
+            font-size: 15px;
+            margin-bottom: 25px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #2e6ff2;
+            padding: 10px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #1c56d4;
+        }
+    </style>
 </head>
-<br>
-<br>
 
-<div class="jumbotron" style="margin-bottom: 0px;margin-top: 0px;">
-  <br>
-  <h5 class="display-3 glow">You’ll Love the Way We Care for You</h5>
-  <br><br><br><br><br>
-  <p>
-  <h3>Emergency ?</h3>
+<body>
+    <div class="container">
 
-  <p class="lead">
-    <a class="btn btn-primary btn-lg" href="/patientclick" role="button">Take Appointment</a>
-  </p>
-  <br><br>
-</div>
+        <h1>MedAI Platform</h1>
+        <div class="subtitle">
+            Эффективная и безопасная коммуникация для медицинского персонала<br>
+            с поддержкой искусственного интеллекта
+        </div>
 
-<br><br><br><br>
+        <div class="cards">
 
-{% include "hospital/admin_doctor_patient_card.html" %}
-<br><br><br>
-<!--
-developed By : sumit kumar
-facebook : fb.com/sumit.luv
-youtube : youtube.com/lazycoders
--->
+            <!-- ADMIN -->
+            <div class="card">
+                <div class="icon-circle">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/administrator-male.png"/>
+                </div>
+                <div class="card-title">Администратор</div>
+                <div class="card-subtitle">Управление системой</div>
+                <a class="btn" href="/adminlogin">Войти</a>
+            </div>
 
-{% endblock content %}
+            <!-- DOCTOR -->
+            <div class="card">
+                <div class="icon-circle">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/doctor-male.png"/>
+                </div>
+                <div class="card-title">Доктор</div>
+                <div class="card-subtitle">Врачи, медсёстры, санитары</div>
+                <a class="btn" href="/doctorlogin">Войти</a>
+            </div>
+
+            <!-- PATIENT -->
+            <div class="card">
+                <div class="icon-circle">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/hospital-bed.png"/>
+                </div>
+                <div class="card-title">Пациент</div>
+                <div class="card-subtitle">Доступ для пациентов</div>
+                <a class="btn" href="/patientlogin">Войти</a>
+            </div>
+
+        </div>
+    </div>
+</body>
+</html>

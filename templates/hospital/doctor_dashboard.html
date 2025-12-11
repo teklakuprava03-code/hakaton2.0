@@ -1,42 +1,1023 @@
-{% extends 'hospital/doctor_base.html' %}
-{% load static %}
-{% block content %}
-{%include 'hospital/doctor_dashboard_cards.html'%}
-<br><br><br><br>
-<div class="container">
-  <div class="row">
-    <div class="panel panel-primary" style="margin-left:15%;">
-      <div class="panel-heading" style="text-align:center;">
-        <h6 class="panel-title">Recent Appointments For You</h6>
-      </div>
-      <table class="table table-hover" id="dev-table">
-        <thead>
-          <tr>
-            <th>Patient Name</th>
-            <th>Picture</th>
-            <th>Description</th>
-            <th>Mobile</th>
-            <th>Address</th>
-            <th>Date</th>
-          </tr>
-        </thead>
-        {% for a,p in appointments %}
-        <tr>
-          <td>{{a.patientName}}</td>
-          <td> <img src="{% static p.profile_pic.url %}" alt="Profile Pic" height="40px" width="40px" /></td>
-          <td>{{a.description}}</td>
-          <td>{{p.mobile}}</td>
-          <td>{{p.address}}</td>
-          <td>{{a.appointmentDate}}</td>
-        </tr>
-        {% endfor %}
-      </table>
-    </div>
-  </div>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>MedAI Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        :root {
+            --bg: #f4f7ff;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --primary: #2563eb;
+            --primary-soft: #e0ecff;
+            --danger-soft: #ffecec;
+            --danger: #e11d48;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --border: #e5e7eb;
+            --chip-bg: #f3f4f6;
+            --chip-dark: #020617;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text", sans-serif;
+            background: radial-gradient(circle at top left, #e0e9ff, #f9fbff);
+            color: var(--text-main);
+        }
+
+        .app-root {
+            display: flex;
+            min-height: 100vh;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* ---------- SIDEBAR ---------- */
+
+        .sidebar {
+            width: 260px;
+            background: var(--sidebar-bg);
+            border-radius: 18px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+            padding: 20px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            font-weight: 700;
+            font-size: 20px;
+            margin-bottom: 24px;
+        }
+
+        .sidebar-nav {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            flex: 1;
+        }
+
+        .nav-item {
+            margin-bottom: 6px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 9px 10px;
+            border-radius: 999px;
+            font-size: 14px;
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: background 0.16s ease, color 0.16s ease, transform 0.08s ease;
+        }
+
+        .nav-link span.icon-circle {
+            width: 26px;
+            height: 26px;
+            border-radius: 999px;
+            background: #eff3ff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .nav-link.active span.icon-circle {
+            background: rgba(255, 255, 255, 0.16);
+            color: #ffffff;
+        }
+
+        .nav-link:hover {
+            background: #f3f4ff;
+            transform: translateY(-1px);
+        }
+
+        .nav-link.logout {
+            color: #dc2626;
+        }
+
+        /* ---------- MAIN ---------- */
+
+        .main {
+            flex: 1;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 22px;
+            box-shadow: 0 18px 45px rgba(15, 23, 42, 0.06);
+            padding: 22px 24px 32px;
+            display: flex;
+            flex-direction: column;
+            max-width: calc(100% - 280px);
+        }
+
+        .main-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .search-wrap {
+            flex: 1;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            border-radius: 999px;
+            border: 1px solid var(--border);
+            padding: 10px 16px 10px 34px;
+            font-size: 14px;
+            outline: none;
+            background: #f9fafb;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 15px;
+            color: #9ca3af;
+        }
+
+        .top-icons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .top-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 999px;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        /* ---------- STATS ---------- */
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            border: 1px solid #edf1ff;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .stat-value {
+            font-size: 22px;
+            font-weight: 700;
+        }
+
+        /* ---------- SECTIONS WRAP ---------- */
+
+        .scroll-area {
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 2fr) minmax(0, 1.4fr);
+            gap: 18px;
+            margin-bottom: 18px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 18px;
+            border: 1px solid #edf1ff;
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.03);
+            padding: 16px 18px;
+        }
+
+        .card-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .card-title-main {
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .card-sub {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ---------- EMERGENCY LIST ---------- */
+
+        .emergency-card {
+            background: var(--danger-soft);
+            border-color: #fecaca;
+        }
+
+        .emergency-title-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--danger);
+        }
+
+        .emergency-title-row span.icon {
+            font-size: 18px;
+        }
+
+        .emergency-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .emergency-item {
+            background: #fff;
+            border-radius: 14px;
+            border: 1px solid #fecaca;
+            padding: 10px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .emergency-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .emergency-name {
+            font-weight: 600;
+        }
+
+        .chip-red {
+            background: #b91c1c;
+            color: white;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .chip-gray {
+            background: #e5e7eb;
+            color: #111827;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .emergency-text {
+            font-size: 13px;
+            color: var(--text-main);
+        }
+
+        .emergency-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ---------- TIMELINE ---------- */
+
+        .timeline-tabs {
+            display: flex;
+            background: #f3f4f6;
+            border-radius: 999px;
+            padding: 3px;
+            margin-bottom: 10px;
+            gap: 3px;
+        }
+
+        .timeline-tab {
+            flex: 1;
+            text-align: center;
+            font-size: 13px;
+            padding: 6px 0;
+            border-radius: 999px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .timeline-tab.active {
+            background: #ffffff;
+            color: #111827;
+            font-weight: 600;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+        }
+
+        .timeline-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .timeline-item {
+            background: #ffffff;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+            padding: 10px 12px;
+        }
+
+        .timeline-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+
+        .timeline-name {
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 11px;
+            background: var(--chip-bg);
+            color: #111827;
+        }
+
+        .badge-dark {
+            background: var(--chip-dark);
+            color: #ffffff;
+        }
+
+        .timeline-text {
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .timeline-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+
+        .timeline-section {
+            display: none;
+        }
+
+        .timeline-section.active {
+            display: block;
+        }
+
+        /* ---------- STAFF ---------- */
+
+        .staff-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .staff-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            padding: 8px 10px;
+            border-radius: 14px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .staff-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar-circle {
+            width: 38px;
+            height: 38px;
+            border-radius: 999px;
+            background: #f3f4f6;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .staff-name {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .staff-role {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .staff-status {
+            font-size: 12px;
+            border-radius: 999px;
+            padding: 4px 10px;
+            border: none;
+        }
+
+        .staff-status.on {
+            background: #020617;
+            color: #ffffff;
+        }
+
+        .staff-status.off {
+            background: #f3f4f6;
+            color: #111827;
+        }
+
+        @media (max-width: 1024px) {
+            .app-root {
+                flex-direction: column;
+            }
+            .main {
+                max-width: 100%;
+            }
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                overflow-x: auto;
+            }
+            .sidebar-nav {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 6px;
+            }
+            .nav-item {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .stats-row {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .sections-grid {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .stats-row {
+                grid-template-columns: minmax(0, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="app-root">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">MedAI Dashboard</div>
+        <ul class="sidebar-nav">
+            <li class="nav-item">
+                <a href="#" class="nav-link active">
+                    <span class="icon-circle">🏠</span>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon-circle">👥</span>
+                    <span>Пациенты</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon-circle">💬</span>
+                    <span>Чаты</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon-circle">🤖</span>
+                    <span>AI Ассистент</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon-circle">📅</span>
+                    <span>Календарь</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon-circle">⚙️</span>
+                    <span>Настройки</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                    <span class="icon-circle">👤</span>
+                    <span>Профиль</span>
+                </a>
+            </li>
+        </ul>
+
+        <a href="{% url 'logout' %}" class="nav-link logout">
+            <span class="icon-circle">⏻</span>
+            <span>Выход</span>
+        </a>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+        <!-- верхняя строка: поиск + иконки -->
+        <div class="main-header">
+            <div class="search-wrap">
+                <span class="search-icon">🔍</span>
+                <input class="search-input" type="text"
+                       placeholder="Поиск пациентов...">
+            </div>
+            <div class="top-icons">
+                <div class="top-icon">📞</div>
+                <div class="top-icon">💬</div>
+                <div class="top-icon">🔔</div>
+            </div>
+        </div>
+
+        <!-- статистика сверху -->
+        <div class="stats-row">
+            <div class="stat-card">
+                <div class="stat-title">Всего пациентов</div>
+                <div class="stat-value">{{ patientcount|default:"0" }}</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Критических</div>
+                <div class="stat-value" style="color:#ef4444;">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Консилиумов сегодня</div>
+                <div class="stat-value">0</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Выписано</div>
+                <div class="stat-value">{{ patientdischarged|default:"0" }}</div>
+            </div>
+        </div>
+
+        <!-- основной скроллируемый контент -->
+        <div class="scroll-area">
+            <div class="sections-grid">
+
+                <!-- левая большая карточка с экстренными уведомлениями -->
+                <section class="card emergency-card">
+                    <div class="emergency-title-row">
+                        <span class="icon">⚠️</span>
+                        <span>Экстренные уведомления</span>
+                    </div>
+                    <div class="emergency-list">
+                        <article class="emergency-item">
+                            <div class="emergency-top">
+                                <div class="emergency-name">Иванов Петр Сергеевич</div>
+                                <span class="chip-red">Высокий приоритет</span>
+                            </div>
+                            <div class="emergency-text">
+                                Ухудшение состояния: повышение температуры до 39.2°C
+                            </div>
+                            <div class="emergency-meta">
+                                ⏱ 5 минут назад
+                            </div>
+                        </article>
+
+                        <article class="emergency-item">
+                            <div class="emergency-top">
+                                <div class="emergency-name">Сидорова Анна Ивановна</div>
+                                <span class="chip-red">Высокий приоритет</span>
+                            </div>
+                            <div class="emergency-text">
+                                Требуется срочная консультация кардиолога
+                            </div>
+                            <div class="emergency-meta">
+                                ⏱ 15 минут назад
+                            </div>
+                        </article>
+
+                        <article class="emergency-item">
+                            <div class="emergency-top">
+                                <div class="emergency-name">Петров Михаил Александрович</div>
+                                <span class="chip-gray">Средний приоритет</span>
+                            </div>
+                            <div class="emergency-text">
+                                Жалобы на боли в грудной клетке
+                            </div>
+                            <div class="emergency-meta">
+                                ⏱ 23 минуты назад
+                            </div>
+                        </article>
+                    </div>
+                </section>
+
+                <!-- правая колонка: мониторинг -->
+                <section class="card">
+                    <div class="card-header-row">
+                        <div>
+                            <div class="card-title-main">Мониторинг состояния</div>
+                            <div class="card-sub">Психическое и физическое</div>
+                        </div>
+                    </div>
+                    <div style="display:flex; justify-content:space-around; margin-top:14px;">
+                        <div style="text-align:center;">
+                            <svg viewBox="0 0 36 36" width="110" height="110">
+                                <path
+                                        d="M18 2
+                                           a 16 16 0 1 1 0 32
+                                           a 16 16 0 1 1 0 -32"
+                                        fill="none" stroke="#e5e7eb" stroke-width="4"/>
+                                <path
+                                        d="M18 2
+                                           a 16 16 0 1 1 0 32"
+                                        fill="none" stroke="#22c55e" stroke-width="4"
+                                        stroke-linecap="round"
+                                        stroke-dasharray="75 100"/>
+                                <text x="18" y="19" text-anchor="middle"
+                                      font-size="8" fill="#111827" font-weight="700">75
+                                </text>
+                                <text x="18" y="25" text-anchor="middle"
+                                      font-size="4" fill="#6b7280">из 100
+                                </text>
+                            </svg>
+                            <div style="font-size:13px; margin-top:4px;">Психическое</div>
+                            <div style="font-size:12px; color:#16a34a;">Отлично</div>
+                        </div>
+
+                        <div style="text-align:center;">
+                            <svg viewBox="0 0 36 36" width="110" height="110">
+                                <path
+                                        d="M18 2
+                                           a 16 16 0 1 1 0 32
+                                           a 16 16 0 1 1 0 -32"
+                                        fill="none" stroke="#e5e7eb" stroke-width="4"/>
+                                <path
+                                        d="M18 2
+                                           a 16 16 0 1 1 0 32"
+                                        fill="none" stroke="#22c55e" stroke-width="4"
+                                        stroke-linecap="round"
+                                        stroke-dasharray="85 100"/>
+                                <text x="18" y="19" text-anchor="middle"
+                                      font-size="8" fill="#111827" font-weight="700">85
+                                </text>
+                                <text x="18" y="25" text-anchor="middle"
+                                      font-size="4" fill="#6b7280">из 100
+                                </text>
+                            </svg>
+                            <div style="font-size:13px; margin-top:4px;">Физическое</div>
+                            <div style="font-size:12px; color:#16a34a;">Отлично</div>
+                        </div>
+                    </div>
+
+                    <div style="display:flex; justify-content:center; gap:16px; margin-top:10px; font-size:12px;">
+                        <span style="display:flex; align-items:center; gap:4px;">
+                            <span style="width:8px;height:8px;border-radius:999px;background:#22c55e;"></span>
+                            Отлично
+                        </span>
+                        <span style="display:flex; align-items:center; gap:4px;">
+                            <span style="width:8px;height:8px;border-radius:999px;background:#facc15;"></span>
+                            Нормально
+                        </span>
+                        <span style="display:flex; align-items:center; gap:4px;">
+                            <span style="width:8px;height:8px;border-radius:999px;background:#ef4444;"></span>
+                            Тревожно
+                        </span>
+                    </div>
+                </section>
+            </div>
+
+            <!-- временная шкала + персонал, ниже, чтобы прокручивалось -->
+            <section class="card" style="margin-top:18px;">
+                <div class="card-title-main" style="margin-bottom:6px;">Временная шкала</div>
+                <div class="timeline-tabs">
+                    <button class="timeline-tab active" data-target="past">Прошлое</button>
+                    <button class="timeline-tab" data-target="present">Настоящее</button>
+                    <button class="timeline-tab" data-target="future">Будущее</button>
+                </div>
+
+                <!-- Прошлое -->
+                <div class="timeline-content active" id="timeline-past">
+                    <!-- Поиск для прошлого -->
+                    <div class="timeline-search">
+                        <span class="timeline-search-icon">🔍</span>
+                        <input type="text" placeholder="Поиск по фамилии, диагнозу..." />
+                    </div>
+
+                    <!-- Статистика выписанных -->
+                    <div class="timeline-card timeline-card-discharge">
+                        <div class="timeline-card-header">
+                            <span class="timeline-card-icon">↘️</span>
+                            <span class="timeline-card-title">Статистика выписанных</span>
+                        </div>
+
+                        <div class="timeline-card-body timeline-card-body-stats">
+                            <div class="stat-col">
+                                <div class="stat-caption">За неделю</div>
+                                <div class="stat-value">24</div>
+                            </div>
+
+                            <div class="stat-col">
+                                <div class="stat-caption">За месяц</div>
+                                <div class="stat-value">98</div>
+                            </div>
+
+                            <div class="stat-col">
+                                <div class="stat-caption">Среднее пребывание</div>
+                                <div class="stat-value">7.3 дня</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Настоящее -->
+                <div class="timeline-content" id="timeline-present">
+                    <div class="timeline-subheader">
+                        <span class="timeline-subtitle">Пациенты в отделении</span>
+                        <span class="badge-pill">4</span>
+                    </div>
+
+                    <div class="timeline-section active" id="timeline-past">
+                        <div class="timeline-list">
+                            <div class="timeline-item">
+                                <div class="timeline-top-row">
+                                    <div class="timeline-name">Иванов Петр Сергеевич</div>
+                                    <div>
+                                        <span class="badge">52 года</span>
+                                        <span class="badge">Палата 204</span>
+                                        <span class="chip-red" style="font-size:11px;">Критическое</span>
+                                    </div>
+                                </div>
+                                <div class="timeline-text">
+                                    Диагноз: ОРВИ с осложнениями
+                                </div>
+                                <div class="timeline-meta">
+                                    Поступил: 14.11.2025
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-top-row">
+                                    <div class="timeline-name">Сидорова Анна Ивановна</div>
+                                    <div>
+                                        <span class="badge">68 лет</span>
+                                        <span class="badge">Палата 207</span>
+                                        <span class="badge">Стабильно</span>
+                                    </div>
+                                </div>
+                                <div class="timeline-text">
+                                    Диагноз: Ишемическая болезнь сердца
+                                </div>
+                                <div class="timeline-meta">
+                                    Поступила: 13.11.2025
+                                </div>
+                            </div>
+
+                            <div class="timeline-item">
+                                <div class="timeline-top-row">
+                                    <div class="timeline-name">Петров Михаил Александрович</div>
+                                    <div>
+                                        <span class="badge">41 год</span>
+                                        <span class="badge">Палата 209</span>
+                                        <span class="badge badge-dark">Улучшение</span>
+                                    </div>
+                                </div>
+                                <div class="timeline-text">
+                                    Диагноз: Язвенная болезнь желудка
+                                </div>
+                                <div class="timeline-meta">
+                                    Поступил: 16.11.2025
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Будущее -->
+                <div class="timeline-content" id="timeline-future">
+                    <!-- Экстренные поступления -->
+                    <div class="timeline-subheader">
+                        <span class="timeline-subtitle with-icon">
+                            <span class="emoji">🚑</span> Экстренные поступления
+                        </span>
+                        <span class="badge-pill badge-red">1</span>
+                    </div>
+
+                    <div class="patient-card emergency-card">
+                        <div class="patient-main">
+                            <div>
+                                <div class="patient-name">Соколов Андрей Игоревич</div>
+                                <div class="patient-tags">
+                                    <span class="tag">47 лет</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="status-badge status-critical">Скорая</span>
+                            </div>
+                        </div>
+                        <div class="patient-info">
+                            <div class="patient-diagnosis">
+                                Диагноз: Острый аппендицит (предварительно)
+                            </div>
+                            <div class="patient-date">
+                                Ожидается: 17.11.2025
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Плановые поступления -->
+                    <div class="timeline-subheader">
+                        <span class="timeline-subtitle with-icon">
+                            <span class="emoji">📋</span> Плановые поступления
+                        </span>
+                        <span class="badge-pill">3</span>
+                    </div>
+
+                    <div class="patient-card planned-card">
+                        <div class="patient-main">
+                            <div>
+                                <div class="patient-name">Новиков Сергей Владимирович</div>
+                                <div class="patient-tags">
+                                    <span class="tag">58 лет</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="status-badge status-planned">Плановое</span>
+                            </div>
+                        </div>
+                        <div class="patient-info">
+                            <div class="patient-diagnosis">
+                                Цель: Плановая операция на коленном суставе
+                            </div>
+                            <div class="patient-date">
+                                Запланировано: 18.11.2025
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="patient-card planned-card">
+                        <div class="patient-main">
+                            <div>
+                                <div class="patient-name">Федорова Мария Александровна</div>
+                                <div class="patient-tags">
+                                    <span class="tag">34 лет</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="status-badge status-planned">Плановое</span>
+                            </div>
+                        </div>
+                        <div class="patient-info">
+                            <div class="patient-diagnosis">
+                                Цель: Обследование щитовидной железы
+                            </div>
+                            <div class="patient-date">
+                                Запланировано: 19.11.2025
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            <!-- персонал отделения -->
+            <section class="card" style="margin-top:18px; margin-bottom:10px;">
+                <div class="card-title-main" style="margin-bottom:6px;">Персонал отделения</div>
+                <div class="staff-list">
+                    <div class="staff-item">
+                        <div class="staff-left">
+                            <div class="avatar-circle">CA</div>
+                            <div>
+                                <div class="staff-name">Врач Смирнов А.В.</div>
+                                <div class="staff-role">Лечащий врач</div>
+                            </div>
+                        </div>
+                        <button class="staff-status on">На смене</button>
+                    </div>
+
+                    <div class="staff-item">
+                        <div class="staff-left">
+                            <div class="avatar-circle">ПМ</div>
+                            <div>
+                                <div class="staff-name">Врач Петрова М.И.</div>
+                                <div class="staff-role">Дежурный врач</div>
+                            </div>
+                        </div>
+                        <button class="staff-status on">На смене</button>
+                    </div>
+
+                    <div class="staff-item">
+                        <div class="staff-left">
+                            <div class="avatar-circle">ИЕ</div>
+                            <div>
+                                <div class="staff-name">М/с Иванова Е.С.</div>
+                                <div class="staff-role">Старшая медсестра</div>
+                            </div>
+                        </div>
+                        <button class="staff-status on">На смене</button>
+                    </div>
+
+                    <div class="staff-item">
+                        <div class="staff-left">
+                            <div class="avatar-circle">КН</div>
+                            <div>
+                                <div class="staff-name">М/с Козлова Н.А.</div>
+                                <div class="staff-role">Медсестра</div>
+                            </div>
+                        </div>
+                        <button class="staff-status on">На смене</button>
+                    </div>
+
+                    <div class="staff-item">
+                        <div class="staff-left">
+                            <div class="avatar-circle">СТ</div>
+                            <div>
+                                <div class="staff-name">М/с Соколова Т.В.</div>
+                                <div class="staff-role">Медсестра</div>
+                            </div>
+                        </div>
+                        <button class="staff-status off">Не на смене</button>
+                    </div>
+
+                    <div class="staff-item">
+                        <div class="staff-left">
+                            <div class="avatar-circle">МО</div>
+                            <div>
+                                <div class="staff-name">Санитарка Михайлова О.П.</div>
+                                <div class="staff-role">Санитарка</div>
+                            </div>
+                        </div>
+                        <button class="staff-status on">На смене</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
 </div>
 
 <script>
-  window.currentPatientChatRoomId = "{{ chat_room_id|default:'' }}";
-</script>
+    // переключение вкладок "Прошлое / Настоящее / Будущее"
+    document.querySelectorAll('.timeline-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            // подсветка кнопок
+            document.querySelectorAll('.timeline-tab').forEach(t => t.classList.remove('active'));
+            tab.classList.add('active');
 
-{% endblock content %}
+            // показать нужный блок
+            const target = tab.dataset.target; // past | present | future
+            document.querySelectorAll('.timeline-section').forEach(sec => sec.classList.remove('active'));
+            const el = document.getElementById('timeline-' + target);
+            if (el) el.classList.add('active');
+        });
+    });
+</script>
+</body>
+</html>
+
+

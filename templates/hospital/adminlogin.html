@@ -1,103 +1,278 @@
 <!DOCTYPE html>
-{% load widget_tweaks %}
-<html lang="en" dir="ltr">
-
+<html lang="ru">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>LazyCoder || sumit</title>
+    <meta charset="UTF-8">
+    <title>Вход администратора — MedAI Platform</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-gradient-from: #f5f9ff;
+            --bg-gradient-to: #e9f0ff;
+            --card-bg: #ffffff;
+            --primary: #2764ff;
+            --primary-soft: #e6eeff;
+            --text-main: #111827;
+            --text-soft: #6b7280;
+            --border-soft: #e5e7eb;
+            --shadow-soft: 0 18px 45px rgba(15, 23, 42, 0.08);
+            --radius-xl: 32px;
+            --radius-full: 999px;
+        }
 
+        * {
+            box-sizing: border-box;
+        }
 
-  <style type="text/css">
-    body {
-      color: #aa082e;
-      background-color: #b6bde7;
-      font-family: 'Roboto', sans-serif;
-    }
+        body {
+            margin: 0;
+            min-height: 100vh;
+            font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            background: radial-gradient(circle at top left, var(--bg-gradient-from), var(--bg-gradient-to));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 32px 16px;
+        }
 
-    a:link {
-      text-decoration: none;
-    }
+        .page {
+            width: 100%;
+            max-width: 960px;
+        }
 
-    .note {
-      text-align: center;
-      height: 80px;
-      background: -webkit-linear-gradient(left, #0072ff, #8811c5);
-      color: #fff;
-      font-weight: bold;
-      line-height: 80px;
-    }
+        .back-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 24px;
+            color: var(--text-soft);
+            font-size: 14px;
+        }
 
-    .form-content {
-      padding: 5%;
-      border: 1px solid #ced4da;
-      margin-bottom: 2%;
-    }
+        .back-row a {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            color: inherit;
+        }
 
-    .form-control {
-      border-radius: 1.5rem;
-    }
+        .back-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            border: 1px solid rgba(148, 163, 184, 0.4);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.9);
+        }
 
-    .btnSubmit {
-      border: none;
-      border-radius: 1.5rem;
-      padding: 1%;
-      width: 20%;
-      cursor: pointer;
-      background: #0062cc;
-      color: #fff;
-    }
-  </style>
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-soft);
+            padding: 40px 40px 36px;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 640px) {
+            .card {
+                padding: 28px 20px 24px;
+                border-radius: 24px;
+            }
+        }
+
+        .card-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .icon-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: var(--radius-full);
+            background: var(--primary-soft);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+        }
+
+        .icon-circle span {
+            font-size: 32px;
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-soft);
+        }
+
+        .tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            background: #f3f4f6;
+            border-radius: var(--radius-full);
+            padding: 3px;
+            margin-bottom: 24px;
+        }
+
+        .tab {
+            border: none;
+            background: transparent;
+            border-radius: var(--radius-full);
+            padding: 8px 0;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.15s ease-in-out;
+            text-decoration: none;
+            text-align: center;
+            color: var(--text-soft);
+        }
+
+        .tab.active {
+            background: #ffffff;
+            color: var(--text-main);
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .input {
+            width: 100%;
+            border-radius: 12px;
+            border: 1px solid var(--border-soft);
+            padding: 11px 14px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px rgba(39, 100, 255, 0.35);
+        }
+
+        .error-box {
+            background: #fef2f2;
+            border-radius: 12px;
+            border: 1px solid #fecaca;
+            color: #b91c1c;
+            font-size: 13px;
+            padding: 10px 12px;
+            margin-bottom: 16px;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            border-radius: var(--radius-full);
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            padding: 12px 16px;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: background 0.15s ease, transform 0.05s ease;
+        }
+
+        .btn-primary:hover {
+            background: #1f4eda;
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        .hint {
+            margin-top: 12px;
+            font-size: 13px;
+            color: var(--text-soft);
+            text-align: center;
+        }
+    </style>
 </head>
-
 <body>
-  {% include "hospital/navbar.html" %}
-  <br>
-  <br>
-  <br><br>
-
-  <!--- login page for admin by admin(sumit)  ---------->
-  <form method="post">
-    {% csrf_token %}
-    <div class="container register-form">
-      <div class="form">
-        <div class="note">
-          <p>Admin Login Page</p>
-        </div>
-
-        <div class="form-content">
-          <div class="row">
-            <div class="col-md-6">
-
-              <div class="form-group">
-                {% render_field form.username class="form-control" placeholder="Username" %}
-              </div>
-
-            </div>
-            <div class="col-md-6">
-
-              <div class="form-group">
-                {% render_field form.password class="form-control" placeholder="Password" %}
-              </div>
-
-            </div>
-          </div>
-          <button type="submit" class="btnSubmit">Login</button>
-          <div class="text-center">Do not have account? <a href="adminsignup">Signup here</a></div>
-        </div>
-      </div>
+<div class="page">
+    <div class="back-row">
+        <a href="/">
+            <span class="back-icon">←</span>
+            <span>На главную</span>
+        </a>
     </div>
 
-  </form>
+    <div class="card">
+        <div class="card-header">
+            <div class="icon-circle">
+                <span>🛠️</span>
+            </div>
+            <div class="title">MedAI Platform</div>
+            <div class="subtitle">Вход администратора</div>
+        </div>
 
-  <br><br><br>
-  <!--
-  developed By : sumit kumar
-  facebook : fb.com/sumit.luv
-  youtube : youtube.com/lazycoders
-  -->
+        <div class="tabs">
+            <button type="button" class="tab active">Вход</button>
+            <a href="{% url 'adminsignup' %}" class="tab">Регистрация</a>
+        </div>
 
-  {% include "hospital/footer.html" %}
+        {% if form and form.errors %}
+            <div class="error-box">
+                Проверьте правильность логина и пароля.
+            </div>
+        {% endif %}
+
+        <form method="post" novalidate>
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="label" for="id_username">Email</label>
+                <input id="id_username"
+                       type="text"
+                       name="username"
+                       class="input"
+                       placeholder="admin@clinic.ru"
+                       required>
+            </div>
+
+            <div class="form-group">
+                <label class="label" for="id_password">Пароль</label>
+                <input id="id_password"
+                       type="password"
+                       name="password"
+                       class="input"
+                       placeholder="Введите пароль"
+                       required>
+            </div>
+
+            <button type="submit" class="btn-primary">Войти</button>
+
+            <div class="hint">
+                Новый администратор? Выберите вкладку «Регистрация».
+            </div>
+        </form>
+    </div>
+</div>
 </body>
-
 </html>

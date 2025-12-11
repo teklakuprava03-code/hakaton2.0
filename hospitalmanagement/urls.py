@@ -15,6 +15,11 @@ from django.urls import path, include
 from hospital import views
 from django.contrib.auth.views import LoginView,LogoutView
 from hospital.views import logout_view
+from django.urls import path
+from hospital import api_views
+from hospital import api_auth
+
+
 
 
 #-------------FOR ADMIN RELATED URLS
@@ -78,6 +83,8 @@ urlpatterns = [
     path('approve-appointment/<int:pk>', views.approve_appointment_view,name='approve-appointment'),
     path('reject-appointment/<int:pk>', views.reject_appointment_view,name='reject-appointment'),
     path('chat/', include('chatrooms.urls')),
+    path("api/patients/", api_views.api_patients, name="api-patients"),
+    path("api/login/", api_auth.api_login, name="api-login"),
 ]
 
 
