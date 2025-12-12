@@ -21,9 +21,7 @@
             --chip-dark: #020617;
         }
 
-        * {
-            box-sizing: border-box;
-        }
+        * { box-sizing: border-box; }
 
         body {
             margin: 0;
@@ -65,9 +63,7 @@
             flex: 1;
         }
 
-        .nav-item {
-            margin-bottom: 6px;
-        }
+        .nav-item { margin-bottom: 6px; }
 
         .nav-link {
             display: flex;
@@ -107,9 +103,7 @@
             transform: translateY(-1px);
         }
 
-        .nav-link.logout {
-            color: #dc2626;
-        }
+        .nav-link.logout { color: #dc2626; }
 
         /* ---------- MAIN ---------- */
 
@@ -131,10 +125,7 @@
             margin-bottom: 20px;
         }
 
-        .search-wrap {
-            flex: 1;
-            position: relative;
-        }
+        .search-wrap { flex: 1; position: relative; }
 
         .search-input {
             width: 100%;
@@ -262,9 +253,7 @@
             color: var(--danger);
         }
 
-        .emergency-title-row span.icon {
-            font-size: 18px;
-        }
+        .emergency-title-row span.icon { font-size: 18px; }
 
         .emergency-list {
             display: flex;
@@ -290,9 +279,7 @@
             gap: 6px;
         }
 
-        .emergency-name {
-            font-weight: 600;
-        }
+        .emergency-name { font-weight: 600; }
 
         .chip-red {
             background: #b91c1c;
@@ -312,10 +299,7 @@
             font-weight: 600;
         }
 
-        .emergency-text {
-            font-size: 13px;
-            color: var(--text-main);
-        }
+        .emergency-text { font-size: 13px; color: var(--text-main); }
 
         .emergency-meta {
             font-size: 12px;
@@ -325,7 +309,7 @@
             gap: 4px;
         }
 
-        /* ---------- TIMELINE ---------- */
+        /* ---------- TIMELINE TABS (ОСТАВЛЯЕМ, но ДОБАВЛЯЕМ СТИЛИ НИЖЕ) ---------- */
 
         .timeline-tabs {
             display: flex;
@@ -355,258 +339,203 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
         }
 
-        /* Временная шкала - исправленные стили */
-        .timeline-content {
-            display: none;
-        }
-
-        .timeline-content.active {
-            display: block;
-        }
-
-        .timeline-search {
-            position: relative;
-            margin-bottom: 14px;
-        }
-
-        .timeline-search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-            font-size: 14px;
-        }
-
-        .timeline-search input {
-            width: 100%;
-            padding: 10px 14px 10px 34px;
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            font-size: 14px;
-            background: #f9fafb;
-            outline: none;
-        }
-
-        .timeline-card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-
-        .timeline-card-discharge {
-            background: #f8fafc;
-            border-color: #e2e8f0;
-        }
-
-        .timeline-card-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .timeline-card-icon {
-            font-size: 16px;
-        }
-
-        .timeline-card-body-stats {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .stat-col {
-            text-align: center;
-            flex: 1;
-        }
-
-        .stat-caption {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .timeline-subheader {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .timeline-subtitle {
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .timeline-subtitle.with-icon {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .emoji {
-            font-size: 16px;
-        }
-
-        .badge-pill {
-            background: #e5e7eb;
-            color: #111827;
-            border-radius: 999px;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .badge-pill.badge-red {
-            background: #ef4444;
-            color: white;
-        }
-
         .timeline-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .timeline-item {
             background: #ffffff;
             border-radius: 14px;
             border: 1px solid #e5e7eb;
-            padding: 12px 14px;
+            padding: 10px 12px;
         }
 
         .timeline-top-row {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 6px;
+            gap: 6px;
         }
 
-        .timeline-name {
-            font-weight: 600;
-            font-size: 14px;
-        }
+        .timeline-name { font-weight: 600; }
 
         .badge {
             display: inline-flex;
             align-items: center;
             border-radius: 999px;
-            padding: 4px 10px;
-            font-size: 12px;
+            padding: 2px 8px;
+            font-size: 11px;
             background: var(--chip-bg);
             color: #111827;
-            margin-right: 6px;
         }
 
-        .badge-dark {
-            background: var(--chip-dark);
-            color: #ffffff;
-        }
+        .badge-dark { background: var(--chip-dark); color: #ffffff; }
 
-        .timeline-text {
-            font-size: 13px;
-            color: #374151;
-            margin-bottom: 6px;
-        }
+        .timeline-text { font-size: 13px; margin-top: 2px; }
 
-        .timeline-meta {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
+        .timeline-meta { font-size: 12px; color: var(--text-muted); margin-top: 3px; }
 
-        .patient-card {
-            background: var(--card-bg);
+        /* =========================
+           FIX: Timeline styles (только для временной шкалы)
+           ========================= */
+
+        /* контейнеры вкладок */
+        .timeline-content { display: none; }
+        .timeline-content.active { display: block; }
+
+        /* поиск в "Прошлое" */
+        .timeline-search {
+            position: relative;
+            margin-top: 10px;
+            margin-bottom: 12px;
+        }
+        .timeline-search input {
+            width: 100%;
             border-radius: 14px;
             border: 1px solid var(--border);
-            padding: 14px;
-            margin-bottom: 10px;
+            padding: 10px 12px 10px 36px;
+            font-size: 13px;
+            outline: none;
+            background: #f3f4f6;
         }
-
-        .emergency-card {
-            background: #fef2f2;
-            border-color: #fecaca;
-        }
-
-        .planned-card {
-            background: #f0f9ff;
-            border-color: #bae6fd;
-        }
-
-        .patient-main {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .patient-name {
-            font-weight: 600;
+        .timeline-search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
             font-size: 14px;
+            color: #94a3b8;
+        }
+
+        /* карточки внутри таймлайна (Прошлое/Будущее) */
+        .timeline-card {
+            background: #ffffff;
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            padding: 14px 14px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+        }
+        .timeline-card-discharge {
+            border-color: #dbeafe;
+            background: #f8fbff;
+        }
+        .timeline-card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        .timeline-card-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 999px;
+            background: #e0ecff;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        .timeline-card-body-stats {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+        .stat-col {
+            border-radius: 14px;
+            padding: 10px 12px;
+            background: #ffffff;
+            border: 1px solid #edf1ff;
+        }
+        .stat-caption {
+            font-size: 12px;
+            color: var(--text-muted);
             margin-bottom: 4px;
         }
 
-        .patient-tags {
+        /* подзаголовки в Present/Future */
+        .timeline-subheader {
             display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 8px 0 10px;
+        }
+        .timeline-subtitle {
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
             gap: 6px;
         }
-
-        .tag {
-            background: #e5e7eb;
+        .badge-pill {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
             color: #111827;
             border-radius: 999px;
-            padding: 3px 8px;
-            font-size: 11px;
+            font-size: 12px;
+            padding: 3px 10px;
+            font-weight: 600;
         }
+        .badge-pill.badge-red {
+            background: #ffecec;
+            border-color: #fecaca;
+            color: #b91c1c;
+        }
+        .with-icon .emoji { font-size: 16px; }
 
+        /* карточки пациентов для Future */
+        .patient-card {
+            border-radius: 16px;
+            border: 1px solid #e5e7eb;
+            background: #ffffff;
+            padding: 12px 14px;
+            margin-bottom: 10px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.03);
+        }
+        .patient-card.emergency-card {
+            background: #fff5f5;
+            border-color: #fecaca;
+        }
+        .patient-card.planned-card {
+            background: #f8fbff;
+            border-color: #dbeafe;
+        }
+        .patient-main {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .patient-name { font-weight: 700; }
+        .patient-tags { margin-top: 4px; display: flex; gap: 6px; flex-wrap: wrap; }
+        .tag {
+            background: #f3f4f6;
+            border: 1px solid #e5e7eb;
+            border-radius: 999px;
+            padding: 2px 8px;
+            font-size: 11px;
+            font-weight: 600;
+        }
         .status-badge {
             border-radius: 999px;
             padding: 4px 10px;
             font-size: 12px;
-            font-weight: 600;
-            border: none;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid transparent;
         }
+        .status-critical { background: #b91c1c; color: #fff; }
+        .status-planned { background: #e5e7eb; color: #111827; }
 
-        .status-critical {
-            background: #dc2626;
-            color: white;
-        }
-
-        .status-planned {
-            background: #0284c7;
-            color: white;
-        }
-
-        .patient-info {
-            font-size: 13px;
-        }
-
-        .patient-diagnosis {
-            color: #374151;
-            margin-bottom: 6px;
-        }
-
-        .patient-date {
-            color: var(--text-muted);
-            font-size: 12px;
-        }
+        .patient-info { margin-top: 8px; }
+        .patient-diagnosis { font-size: 13px; }
+        .patient-date { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 
         /* ---------- STAFF ---------- */
 
@@ -626,11 +555,7 @@
             border: 1px solid #e5e7eb;
         }
 
-        .staff-left {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+        .staff-left { display: flex; align-items: center; gap: 10px; }
 
         .avatar-circle {
             width: 38px;
@@ -644,15 +569,9 @@
             font-weight: 600;
         }
 
-        .staff-name {
-            font-size: 14px;
-            font-weight: 600;
-        }
+        .staff-name { font-size: 14px; font-weight: 600; }
 
-        .staff-role {
-            font-size: 12px;
-            color: var(--text-muted);
-        }
+        .staff-role { font-size: 12px; color: var(--text-muted); }
 
         .staff-status {
             font-size: 12px;
@@ -661,366 +580,29 @@
             border: none;
         }
 
-        .staff-status.on {
-            background: #020617;
-            color: #ffffff;
-        }
+        .staff-status.on { background: #020617; color: #ffffff; }
 
-        .staff-status.off {
-            background: #f3f4f6;
-            color: #111827;
-        }
+        .staff-status.off { background: #f3f4f6; color: #111827; }
 
         @media (max-width: 1024px) {
-            .app-root {
-                flex-direction: column;
-            }
-            .main {
-                max-width: 100%;
-            }
-            .sidebar {
-                width: 100%;
-                flex-direction: row;
-                overflow-x: auto;
-            }
-            .sidebar-nav {
-                display: flex;
-                flex-wrap: nowrap;
-                gap: 6px;
-            }
-            .nav-item {
-                margin-bottom: 0;
-            }
+            .app-root { flex-direction: column; }
+            .main { max-width: 100%; }
+            .sidebar { width: 100%; flex-direction: row; overflow-x: auto; }
+            .sidebar-nav { display: flex; flex-wrap: nowrap; gap: 6px; }
+            .nav-item { margin-bottom: 0; }
         }
 
         @media (max-width: 900px) {
-            .stats-row {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-            .sections-grid {
-                grid-template-columns: minmax(0, 1fr);
-            }
+            .stats-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .sections-grid { grid-template-columns: minmax(0, 1fr); }
         }
 
         @media (max-width: 600px) {
-            .stats-row {
-                grid-template-columns: minmax(0, 1fr));
-            }
-        }
-
-        /* =========================
-           DEMO: Patient micro-chat
-           ========================= */
-
-        .clickable-patient{
-            cursor: pointer;
-            text-decoration: underline;
-            text-decoration-color: rgba(17,24,39,.25);
-            text-underline-offset: 3px;
-        }
-        .clickable-patient:hover{
-            text-decoration-color: rgba(37,99,235,.6);
-        }
-
-        .chat-overlay{
-            position: fixed;
-            inset: 0;
-            background: rgba(2, 6, 23, 0.25);
-            display: none;
-            z-index: 9999;
-            backdrop-filter: blur(4px);
-        }
-
-        .chat-modal{
-            position: absolute;
-            left: 20%;
-            top: 10%;
-            width: 60%;
-            height: 80%;
-            background: rgba(255,255,255,0.98);
-            border: 1px solid #e5e7eb;
-            border-radius: 20px;
-            box-shadow: 0 25px 60px rgba(15,23,42,0.25);
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .chat-header{
-            padding: 16px 20px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-            background: #ffffff;
-            border-bottom: 1px solid #eef2ff;
-        }
-
-        .chat-header-left{
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            min-width: 0;
-        }
-
-        .chat-patient-badge{
-            width: 40px;
-            height: 40px;
-            border-radius: 999px;
-            background: #eff3ff;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 16px;
-            color: #2563eb;
-        }
-
-        .chat-title{
-            min-width: 0;
-        }
-        .chat-title .name{
-            font-weight: 700;
-            font-size: 16px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        .chat-title .meta{
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        .chat-actions{
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .chat-action-btn{
-            border: 1px solid #e5e7eb;
-            background: #fff;
-            border-radius: 999px;
-            padding: 8px 14px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: transform .08s ease, background .15s ease;
-        }
-        .chat-action-btn:hover{ background: #f3f4ff; transform: translateY(-1px); }
-
-        .chat-close{
-            width: 38px;
-            height: 38px;
-            border-radius: 999px;
-            border: 1px solid #e5e7eb;
-            background: #fff;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        .chat-body{
-            flex: 1;
-            display: flex;
-            min-height: 0;
-        }
-
-        .chat-left{
-            width: 30%;
-            border-right: 1px solid #eef2ff;
-            background: #fbfcff;
-            padding: 16px;
-            overflow: auto;
-        }
-
-        .chat-left h4{
-            margin: 0 0 12px 0;
-            font-size: 14px;
-            color: #111827;
-            font-weight: 600;
-        }
-        .patient-menu{
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        .patient-menu button{
-            width: 100%;
-            text-align: left;
-            border: 1px solid #e5e7eb;
-            background: #fff;
-            border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 13px;
-            cursor: pointer;
-            transition: background .15s ease;
-        }
-        .patient-menu button:hover{ background: #f3f4ff; }
-
-        .chat-center{
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-        }
-
-        .chat-messages{
-            flex: 1;
-            padding: 16px 16px 0 16px;
-            overflow: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .msg{
-            max-width: 85%;
-            padding: 12px 14px;
-            border-radius: 16px;
-            font-size: 14px;
-            border: 1px solid #e5e7eb;
-            background: #fff;
-            line-height: 1.4;
-        }
-        .msg.me{
-            align-self: flex-end;
-            background: #e0ecff;
-            border-color: #c7ddff;
-        }
-        .msg .who{
-            font-weight: 700;
-            font-size: 12px;
-            margin-bottom: 4px;
-            color: #374151;
-        }
-        .msg .text{ color: #111827; }
-        .msg .time{
-            margin-top: 6px;
-            font-size: 11px;
-            color: #6b7280;
-            text-align: right;
-        }
-
-        .chat-input{
-            padding: 16px;
-            border-top: 1px solid #eef2ff;
-            background: #fff;
-            display: flex;
-            gap: 10px;
-        }
-        .chat-input input{
-            flex: 1;
-            border-radius: 999px;
-            border: 1px solid #e5e7eb;
-            padding: 12px 16px;
-            font-size: 14px;
-            outline: none;
-            background: #f9fafb;
-        }
-        .chat-input button{
-            border-radius: 999px;
-            border: 1px solid #e5e7eb;
-            background: #111827;
-            color: #fff;
-            padding: 12px 20px;
-            font-size: 14px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        .ai-panel{
-            width: 0;
-            border-left: 0;
-            overflow: hidden;
-            background: #ffffff;
-            transition: width .18s ease, border-left .18s ease;
-            display: flex;
-            flex-direction: column;
-        }
-        .chat-modal.ai-open .ai-panel{
-            width: 35%;
-            border-left: 1px solid #eef2ff;
-        }
-        .ai-header{
-            padding: 16px;
-            border-bottom: 1px solid #eef2ff;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .ai-header .title{
-            font-weight: 700;
-            font-size: 14px;
-        }
-        .ai-header .hint{
-            font-size: 12px;
-            color: #6b7280;
-            margin-top: 2px;
-        }
-        .ai-body{
-            flex: 1;
-            padding: 16px;
-            overflow: auto;
-        }
-        .ai-bubble{
-            border-radius: 14px;
-            border: 1px solid #e5e7eb;
-            background: #f8fbff;
-            padding: 12px 14px;
-            font-size: 13px;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-        .ai-input{
-            padding: 16px;
-            border-top: 1px solid #eef2ff;
-            display: flex;
-            gap: 10px;
-        }
-        .ai-input input{
-            flex: 1;
-            border-radius: 999px;
-            border: 1px solid #e5e7eb;
-            padding: 12px 16px;
-            font-size: 13px;
-            outline: none;
-            background: #f9fafb;
-        }
-        .ai-input button{
-            border-radius: 999px;
-            border: 1px solid #e5e7eb;
-            background: #2563eb;
-            color: #fff;
-            padding: 12px 20px;
-            font-size: 13px;
-            cursor: pointer;
-            font-weight: 500;
-        }
-
-        @media (max-width: 1100px){
-            .chat-modal{
-                left: 10%;
-                width: 80%;
-                height: 75%;
-            }
-            .chat-left{ width: 35%; }
-        }
-
-        @media (max-width: 768px){
-            .chat-modal{
-                left: 5%;
-                width: 90%;
-                height: 85%;
-                top: 7%;
-            }
-            .chat-left{ width: 40%; }
-            .chat-modal.ai-open .ai-panel{ width: 45%; }
+            .stats-row { grid-template-columns: minmax(0, 1fr); }
         }
     </style>
 </head>
+
 <body>
 <div class="app-root">
 
@@ -1084,8 +666,7 @@
         <div class="main-header">
             <div class="search-wrap">
                 <span class="search-icon">🔍</span>
-                <input class="search-input" type="text"
-                       placeholder="Поиск пациентов...">
+                <input class="search-input" type="text" placeholder="Поиск пациентов...">
             </div>
             <div class="top-icons">
                 <div class="top-icon">📞</div>
@@ -1127,16 +708,13 @@
                     <div class="emergency-list">
                         <article class="emergency-item">
                             <div class="emergency-top">
-                                <!-- ИЗМЕНЕНО ТОЛЬКО ИМЯ (кликабельность + data-open-chat) -->
-                                <div class="emergency-name clickable-patient" data-open-chat="ivanov" title="Открыть чат пациента">Иванов Петр Сергеевич</div>
+                                <div class="emergency-name">Иванов Петр Сергеевич</div>
                                 <span class="chip-red">Высокий приоритет</span>
                             </div>
                             <div class="emergency-text">
                                 Ухудшение состояния: повышение температуры до 39.2°C
                             </div>
-                            <div class="emergency-meta">
-                                ⏱ 5 минут назад
-                            </div>
+                            <div class="emergency-meta">⏱ 5 минут назад</div>
                         </article>
 
                         <article class="emergency-item">
@@ -1147,9 +725,7 @@
                             <div class="emergency-text">
                                 Требуется срочная консультация кардиолога
                             </div>
-                            <div class="emergency-meta">
-                                ⏱ 15 минут назад
-                            </div>
+                            <div class="emergency-meta">⏱ 15 минут назад</div>
                         </article>
 
                         <article class="emergency-item">
@@ -1160,9 +736,7 @@
                             <div class="emergency-text">
                                 Жалобы на боли в грудной клетке
                             </div>
-                            <div class="emergency-meta">
-                                ⏱ 23 минуты назад
-                            </div>
+                            <div class="emergency-meta">⏱ 23 минуты назад</div>
                         </article>
                     </div>
                 </section>
@@ -1178,23 +752,16 @@
                     <div style="display:flex; justify-content:space-around; margin-top:14px;">
                         <div style="text-align:center;">
                             <svg viewBox="0 0 36 36" width="110" height="110">
-                                <path
-                                        d="M18 2
-                                           a 16 16 0 1 1 0 32
-                                           a 16 16 0 1 1 0 -32"
-                                        fill="none" stroke="#e5e7eb" stroke-width="4"/>
-                                <path
-                                        d="M18 2
-                                           a 16 16 0 1 1 0 32"
-                                        fill="none" stroke="#22c55e" stroke-width="4"
-                                        stroke-linecap="round"
-                                        stroke-dasharray="75 100"/>
+                                <path d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"
+                                      fill="none" stroke="#e5e7eb" stroke-width="4"/>
+                                <path d="M18 2 a 16 16 0 1 1 0 32"
+                                      fill="none" stroke="#22c55e" stroke-width="4"
+                                      stroke-linecap="round"
+                                      stroke-dasharray="75 100"/>
                                 <text x="18" y="19" text-anchor="middle"
-                                      font-size="8" fill="#111827" font-weight="700">75
-                                </text>
+                                      font-size="8" fill="#111827" font-weight="700">75</text>
                                 <text x="18" y="25" text-anchor="middle"
-                                      font-size="4" fill="#6b7280">из 100
-                                </text>
+                                      font-size="4" fill="#6b7280">из 100</text>
                             </svg>
                             <div style="font-size:13px; margin-top:4px;">Психическое</div>
                             <div style="font-size:12px; color:#16a34a;">Отлично</div>
@@ -1202,23 +769,16 @@
 
                         <div style="text-align:center;">
                             <svg viewBox="0 0 36 36" width="110" height="110">
-                                <path
-                                        d="M18 2
-                                           a 16 16 0 1 1 0 32
-                                           a 16 16 0 1 1 0 -32"
-                                        fill="none" stroke="#e5e7eb" stroke-width="4"/>
-                                <path
-                                        d="M18 2
-                                           a 16 16 0 1 1 0 32"
-                                        fill="none" stroke="#22c55e" stroke-width="4"
-                                        stroke-linecap="round"
-                                        stroke-dasharray="85 100"/>
+                                <path d="M18 2 a 16 16 0 1 1 0 32 a 16 16 0 1 1 0 -32"
+                                      fill="none" stroke="#e5e7eb" stroke-width="4"/>
+                                <path d="M18 2 a 16 16 0 1 1 0 32"
+                                      fill="none" stroke="#22c55e" stroke-width="4"
+                                      stroke-linecap="round"
+                                      stroke-dasharray="85 100"/>
                                 <text x="18" y="19" text-anchor="middle"
-                                      font-size="8" fill="#111827" font-weight="700">85
-                                </text>
+                                      font-size="8" fill="#111827" font-weight="700">85</text>
                                 <text x="18" y="25" text-anchor="middle"
-                                      font-size="4" fill="#6b7280">из 100
-                                </text>
+                                      font-size="4" fill="#6b7280">из 100</text>
                             </svg>
                             <div style="font-size:13px; margin-top:4px;">Физическое</div>
                             <div style="font-size:12px; color:#16a34a;">Отлично</div>
@@ -1243,7 +803,7 @@
             </div>
 
             <!-- =========================
-                 ВРЕМЕННАЯ ШКАЛА (ИСПРАВЛЕНА)
+                 ВРЕМЕННАЯ ШКАЛА (ИСПРАВЛЕНО ТОЛЬКО ОНА)
                  ========================= -->
             <section class="card" style="margin-top:18px;">
                 <div class="card-title-main" style="margin-bottom:6px;">Временная шкала</div>
@@ -1298,7 +858,7 @@
                                 <div>
                                     <span class="badge">52 года</span>
                                     <span class="badge">Палата 204</span>
-                                    <span class="chip-red" style="font-size:11px; display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 10px; background: #dc2626; color: white; font-weight: 600;">Критическое</span>
+                                    <span class="chip-red" style="font-size:11px;">Критическое</span>
                                 </div>
                             </div>
                             <div class="timeline-text">Диагноз: ОРВИ с осложнениями</div>
@@ -1489,90 +1049,8 @@
     </main>
 </div>
 
-<!-- =========================
-     DEMO: Patient Micro-Chat Overlay
-     ========================= -->
-<div class="chat-overlay" id="chatOverlay" aria-hidden="true">
-    <div class="chat-modal" id="chatModal" role="dialog" aria-modal="true" aria-label="Чат пациента">
-        <div class="chat-header">
-            <div class="chat-header-left">
-                <div class="chat-patient-badge">ИП</div>
-                <div class="chat-title">
-                    <div class="name" id="chatPatientName">Иванов Петр Сергеевич</div>
-                    <div class="meta">Палата 204 • Критическое • Командный чат</div>
-                </div>
-            </div>
-
-            <div class="chat-actions">
-                <button class="chat-action-btn" type="button" id="btnCall">📞 Вызов</button>
-                <button class="chat-action-btn" type="button" id="btnAI">🤖 AI</button>
-                <button class="chat-close" type="button" id="btnCloseChat">✕</button>
-            </div>
-        </div>
-
-        <div class="chat-body">
-            <aside class="chat-left">
-                <h4>Карточка пациента</h4>
-                <div class="patient-menu">
-                    <button type="button">🧪 Анализы</button>
-                    <button type="button">🩻 Обследования</button>
-                    <button type="button">📜 Анамнез</button>
-                    <button type="button">📄 Направления</button>
-                    <button type="button">💊 Назначения</button>
-                    <button type="button">🧾 Выписки</button>
-                </div>
-
-                <div style="margin-top:12px; font-size:12px; color:#6b7280; line-height:1.35;">
-                    (Демо) Здесь позже подключим реальные данные из Django/БД.
-                </div>
-            </aside>
-
-            <section class="chat-center">
-                <div class="chat-messages" id="chatMessages">
-                    <div class="msg">
-                        <div class="who">М/с Иванова Е.С.</div>
-                        <div class="text">Температура 39.2, пациент жалуется на озноб.</div>
-                        <div class="time">5 минут назад</div>
-                    </div>
-                    <div class="msg me">
-                        <div class="who">Вы</div>
-                        <div class="text">Принял. Подготовьте жаропонижающее и контроль через 20 минут.</div>
-                        <div class="time">только что</div>
-                    </div>
-                </div>
-
-                <div class="chat-input">
-                    <input type="text" placeholder="Сообщение (демо)..." />
-                    <button type="button">Отправить</button>
-                </div>
-            </section>
-
-            <aside class="ai-panel" id="aiPanel">
-                <div class="ai-header">
-                    <div>
-                        <div class="title">AI помощник</div>
-                        <div class="hint">Вопросы по пациенту и протоколам</div>
-                    </div>
-                    <button class="chat-action-btn" type="button" id="btnCloseAI">Скрыть</button>
-                </div>
-
-                <div class="ai-body" id="aiBody">
-                    <div class="ai-bubble">
-                        (Демо) Спроси: “Какие красные флаги при 39+ и ознобе?”
-                    </div>
-                </div>
-
-                <div class="ai-input">
-                    <input type="text" placeholder="Задать вопрос (демо)..." />
-                    <button type="button">Спросить</button>
-                </div>
-            </aside>
-        </div>
-    </div>
-</div>
-
 <script>
-    // переключение вкладок "Прошлое / Настоящее / Будущее"
+    // FIX: переключаем именно .timeline-content, а не .timeline-section
     document.querySelectorAll('.timeline-tab').forEach(tab => {
         tab.addEventListener('click', () => {
             // подсветка кнопок
@@ -1586,61 +1064,7 @@
             if (el) el.classList.add('active');
         });
     });
-
-    /* =========================
-       DEMO: Patient micro-chat logic
-       ========================= */
-
-    const chatOverlay = document.getElementById('chatOverlay');
-    const chatModal = document.getElementById('chatModal');
-    const btnCloseChat = document.getElementById('btnCloseChat');
-    const btnAI = document.getElementById('btnAI');
-    const btnCloseAI = document.getElementById('btnCloseAI');
-
-    function openChat(patientKey) {
-        chatOverlay.style.display = 'block';
-        chatOverlay.setAttribute('aria-hidden', 'false');
-        chatModal.classList.remove('ai-open');
-    }
-
-    function closeChat() {
-        chatOverlay.style.display = 'none';
-        chatOverlay.setAttribute('aria-hidden', 'true');
-        chatModal.classList.remove('ai-open');
-    }
-
-    function toggleAI(open) {
-        if (open === true) chatModal.classList.add('ai-open');
-        else if (open === false) chatModal.classList.remove('ai-open');
-        else chatModal.classList.toggle('ai-open');
-    }
-
-    // клик по Иванову (или любому элементу с data-open-chat)
-    document.querySelectorAll('[data-open-chat]').forEach(el => {
-        el.addEventListener('click', () => {
-            const key = el.getAttribute('data-open-chat');
-            openChat(key);
-        });
-    });
-
-    // закрытие по X
-    btnCloseChat.addEventListener('click', closeChat);
-
-    // закрытие по клику на затемнение (вне окна)
-    chatOverlay.addEventListener('click', (e) => {
-        if (e.target === chatOverlay) closeChat();
-    });
-
-    // Esc закрывает чат
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && chatOverlay.style.display === 'block') {
-            closeChat();
-        }
-    });
-
-    // AI панель
-    btnAI.addEventListener('click', () => toggleAI());
-    btnCloseAI.addEventListener('click', () => toggleAI(false));
 </script>
 </body>
 </html>
+

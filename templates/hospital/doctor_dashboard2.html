@@ -355,165 +355,39 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
         }
 
-        /* Временная шкала - исправленные стили */
-        .timeline-content {
-            display: none;
-        }
-
-        .timeline-content.active {
-            display: block;
-        }
-
-        .timeline-search {
-            position: relative;
-            margin-bottom: 14px;
-        }
-
-        .timeline-search-icon {
-            position: absolute;
-            left: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #9ca3af;
-            font-size: 14px;
-        }
-
-        .timeline-search input {
-            width: 100%;
-            padding: 10px 14px 10px 34px;
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            font-size: 14px;
-            background: #f9fafb;
-            outline: none;
-        }
-
-        .timeline-card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            padding: 14px;
-            margin-bottom: 12px;
-        }
-
-        .timeline-card-discharge {
-            background: #f8fafc;
-            border-color: #e2e8f0;
-        }
-
-        .timeline-card-header {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-            font-weight: 600;
-            font-size: 14px;
-        }
-
-        .timeline-card-icon {
-            font-size: 16px;
-        }
-
-        .timeline-card-body-stats {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-
-        .stat-col {
-            text-align: center;
-            flex: 1;
-        }
-
-        .stat-caption {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 4px;
-        }
-
-        .stat-value {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--text-main);
-        }
-
-        .timeline-subheader {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            padding-bottom: 8px;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .timeline-subtitle {
-            font-size: 14px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .timeline-subtitle.with-icon {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .emoji {
-            font-size: 16px;
-        }
-
-        .badge-pill {
-            background: #e5e7eb;
-            color: #111827;
-            border-radius: 999px;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .badge-pill.badge-red {
-            background: #ef4444;
-            color: white;
-        }
-
         .timeline-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
         }
 
         .timeline-item {
             background: #ffffff;
             border-radius: 14px;
             border: 1px solid #e5e7eb;
-            padding: 12px 14px;
+            padding: 10px 12px;
         }
 
         .timeline-top-row {
             display: flex;
-            align-items: flex-start;
+            align-items: center;
             justify-content: space-between;
             flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 6px;
+            gap: 6px;
         }
 
         .timeline-name {
             font-weight: 600;
-            font-size: 14px;
         }
 
         .badge {
             display: inline-flex;
             align-items: center;
             border-radius: 999px;
-            padding: 4px 10px;
-            font-size: 12px;
+            padding: 2px 8px;
+            font-size: 11px;
             background: var(--chip-bg);
             color: #111827;
-            margin-right: 6px;
         }
 
         .badge-dark {
@@ -523,89 +397,21 @@
 
         .timeline-text {
             font-size: 13px;
-            color: #374151;
-            margin-bottom: 6px;
+            margin-top: 2px;
         }
 
         .timeline-meta {
             font-size: 12px;
             color: var(--text-muted);
+            margin-top: 3px;
         }
 
-        .patient-card {
-            background: var(--card-bg);
-            border-radius: 14px;
-            border: 1px solid var(--border);
-            padding: 14px;
-            margin-bottom: 10px;
+        .timeline-section {
+            display: none;
         }
 
-        .emergency-card {
-            background: #fef2f2;
-            border-color: #fecaca;
-        }
-
-        .planned-card {
-            background: #f0f9ff;
-            border-color: #bae6fd;
-        }
-
-        .patient-main {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 10px;
-        }
-
-        .patient-name {
-            font-weight: 600;
-            font-size: 14px;
-            margin-bottom: 4px;
-        }
-
-        .patient-tags {
-            display: flex;
-            gap: 6px;
-        }
-
-        .tag {
-            background: #e5e7eb;
-            color: #111827;
-            border-radius: 999px;
-            padding: 3px 8px;
-            font-size: 11px;
-        }
-
-        .status-badge {
-            border-radius: 999px;
-            padding: 4px 10px;
-            font-size: 12px;
-            font-weight: 600;
-            border: none;
-        }
-
-        .status-critical {
-            background: #dc2626;
-            color: white;
-        }
-
-        .status-planned {
-            background: #0284c7;
-            color: white;
-        }
-
-        .patient-info {
-            font-size: 13px;
-        }
-
-        .patient-diagnosis {
-            color: #374151;
-            margin-bottom: 6px;
-        }
-
-        .patient-date {
-            color: var(--text-muted);
-            font-size: 12px;
+        .timeline-section.active {
+            display: block;
         }
 
         /* ---------- STAFF ---------- */
@@ -725,33 +531,32 @@
         .chat-overlay{
             position: fixed;
             inset: 0;
-            background: rgba(2, 6, 23, 0.25);
+            background: rgba(2, 6, 23, 0.18);
             display: none;
             z-index: 9999;
-            backdrop-filter: blur(4px);
         }
 
         .chat-modal{
             position: absolute;
-            left: 20%;
-            top: 10%;
-            width: 60%;
-            height: 80%;
-            background: rgba(255,255,255,0.98);
+            left: 28%;
+            top: 18%;
+            width: 26%;
+            height: 52%;
+            background: rgba(255,255,255,0.92);
             border: 1px solid #e5e7eb;
-            border-radius: 20px;
-            box-shadow: 0 25px 60px rgba(15,23,42,0.25);
+            border-radius: 18px;
+            box-shadow: 0 22px 60px rgba(15,23,42,0.18);
             overflow: hidden;
             display: flex;
             flex-direction: column;
         }
 
         .chat-header{
-            padding: 16px 20px;
+            padding: 12px 14px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 12px;
+            gap: 10px;
             background: #ffffff;
             border-bottom: 1px solid #eef2ff;
         }
@@ -759,20 +564,19 @@
         .chat-header-left{
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             min-width: 0;
         }
 
         .chat-patient-badge{
-            width: 40px;
-            height: 40px;
+            width: 34px;
+            height: 34px;
             border-radius: 999px;
             background: #eff3ff;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: 700;
-            font-size: 16px;
             color: #2563eb;
         }
 
@@ -781,44 +585,40 @@
         }
         .chat-title .name{
             font-weight: 700;
-            font-size: 16px;
+            font-size: 14px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
         .chat-title .meta{
-            font-size: 13px;
+            font-size: 12px;
             color: #6b7280;
         }
 
         .chat-actions{
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
         }
 
         .chat-action-btn{
             border: 1px solid #e5e7eb;
             background: #fff;
             border-radius: 999px;
-            padding: 8px 14px;
-            font-size: 13px;
+            padding: 7px 10px;
+            font-size: 12px;
             cursor: pointer;
             transition: transform .08s ease, background .15s ease;
         }
         .chat-action-btn:hover{ background: #f3f4ff; transform: translateY(-1px); }
 
         .chat-close{
-            width: 38px;
-            height: 38px;
+            width: 34px;
+            height: 34px;
             border-radius: 999px;
             border: 1px solid #e5e7eb;
             background: #fff;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
         }
 
         .chat-body{
@@ -828,23 +628,22 @@
         }
 
         .chat-left{
-            width: 30%;
+            width: 34%;
             border-right: 1px solid #eef2ff;
             background: #fbfcff;
-            padding: 16px;
+            padding: 10px;
             overflow: auto;
         }
 
         .chat-left h4{
-            margin: 0 0 12px 0;
-            font-size: 14px;
+            margin: 0 0 8px 0;
+            font-size: 12px;
             color: #111827;
-            font-weight: 600;
         }
         .patient-menu{
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 6px;
         }
         .patient-menu button{
             width: 100%;
@@ -852,10 +651,9 @@
             border: 1px solid #e5e7eb;
             background: #fff;
             border-radius: 12px;
-            padding: 10px 14px;
-            font-size: 13px;
+            padding: 8px 10px;
+            font-size: 12px;
             cursor: pointer;
-            transition: background .15s ease;
         }
         .patient-menu button:hover{ background: #f3f4ff; }
 
@@ -868,21 +666,20 @@
 
         .chat-messages{
             flex: 1;
-            padding: 16px 16px 0 16px;
+            padding: 10px 10px 0 10px;
             overflow: auto;
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 8px;
         }
 
         .msg{
             max-width: 85%;
-            padding: 12px 14px;
-            border-radius: 16px;
-            font-size: 14px;
+            padding: 8px 10px;
+            border-radius: 14px;
+            font-size: 12px;
             border: 1px solid #e5e7eb;
             background: #fff;
-            line-height: 1.4;
         }
         .msg.me{
             align-self: flex-end;
@@ -891,31 +688,25 @@
         }
         .msg .who{
             font-weight: 700;
-            font-size: 12px;
-            margin-bottom: 4px;
-            color: #374151;
+            font-size: 11px;
+            margin-bottom: 2px;
         }
         .msg .text{ color: #111827; }
-        .msg .time{
-            margin-top: 6px;
-            font-size: 11px;
-            color: #6b7280;
-            text-align: right;
-        }
+        .msg .time{ margin-top: 4px; font-size: 10px; color: #6b7280; }
 
         .chat-input{
-            padding: 16px;
+            padding: 10px;
             border-top: 1px solid #eef2ff;
             background: #fff;
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         .chat-input input{
             flex: 1;
             border-radius: 999px;
             border: 1px solid #e5e7eb;
-            padding: 12px 16px;
-            font-size: 14px;
+            padding: 9px 12px;
+            font-size: 12px;
             outline: none;
             background: #f9fafb;
         }
@@ -924,10 +715,9 @@
             border: 1px solid #e5e7eb;
             background: #111827;
             color: #fff;
-            padding: 12px 20px;
-            font-size: 14px;
+            padding: 9px 12px;
+            font-size: 12px;
             cursor: pointer;
-            font-weight: 500;
         }
 
         .ai-panel{
@@ -940,52 +730,50 @@
             flex-direction: column;
         }
         .chat-modal.ai-open .ai-panel{
-            width: 35%;
+            width: 38%;
             border-left: 1px solid #eef2ff;
         }
         .ai-header{
-            padding: 16px;
+            padding: 10px;
             border-bottom: 1px solid #eef2ff;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
+            gap: 8px;
         }
         .ai-header .title{
             font-weight: 700;
-            font-size: 14px;
+            font-size: 12px;
         }
         .ai-header .hint{
-            font-size: 12px;
+            font-size: 11px;
             color: #6b7280;
-            margin-top: 2px;
         }
         .ai-body{
             flex: 1;
-            padding: 16px;
+            padding: 10px;
             overflow: auto;
         }
         .ai-bubble{
             border-radius: 14px;
             border: 1px solid #e5e7eb;
             background: #f8fbff;
-            padding: 12px 14px;
-            font-size: 13px;
-            margin-bottom: 10px;
-            line-height: 1.4;
+            padding: 8px 10px;
+            font-size: 12px;
+            margin-bottom: 8px;
         }
         .ai-input{
-            padding: 16px;
+            padding: 10px;
             border-top: 1px solid #eef2ff;
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         .ai-input input{
             flex: 1;
             border-radius: 999px;
             border: 1px solid #e5e7eb;
-            padding: 12px 16px;
-            font-size: 13px;
+            padding: 9px 12px;
+            font-size: 12px;
             outline: none;
             background: #f9fafb;
         }
@@ -994,30 +782,18 @@
             border: 1px solid #e5e7eb;
             background: #2563eb;
             color: #fff;
-            padding: 12px 20px;
-            font-size: 13px;
+            padding: 9px 12px;
+            font-size: 12px;
             cursor: pointer;
-            font-weight: 500;
         }
 
         @media (max-width: 1100px){
             .chat-modal{
                 left: 10%;
                 width: 80%;
-                height: 75%;
+                height: 60%;
             }
-            .chat-left{ width: 35%; }
-        }
-
-        @media (max-width: 768px){
-            .chat-modal{
-                left: 5%;
-                width: 90%;
-                height: 85%;
-                top: 7%;
-            }
-            .chat-left{ width: 40%; }
-            .chat-modal.ai-open .ai-panel{ width: 45%; }
+            .chat-left{ width: 38%; }
         }
     </style>
 </head>
@@ -1243,7 +1019,7 @@
             </div>
 
             <!-- =========================
-                 ВРЕМЕННАЯ ШКАЛА (ИСПРАВЛЕНА)
+                 ВРЕМЕННАЯ ШКАЛА (ИСПРАВЛЕНО ТОЛЬКО ОНА)
                  ========================= -->
             <section class="card" style="margin-top:18px;">
                 <div class="card-title-main" style="margin-bottom:6px;">Временная шкала</div>
@@ -1298,7 +1074,7 @@
                                 <div>
                                     <span class="badge">52 года</span>
                                     <span class="badge">Палата 204</span>
-                                    <span class="chip-red" style="font-size:11px; display: inline-flex; align-items: center; border-radius: 999px; padding: 4px 10px; background: #dc2626; color: white; font-weight: 600;">Критическое</span>
+                                    <span class="chip-red" style="font-size:11px;">Критическое</span>
                                 </div>
                             </div>
                             <div class="timeline-text">Диагноз: ОРВИ с осложнениями</div>
@@ -1413,6 +1189,59 @@
             <!-- =========================
                  /ВРЕМЕННАЯ ШКАЛА
                  ========================= -->
+
+                    <!-- Плановые поступления -->
+                    <div class="timeline-subheader">
+                        <span class="timeline-subtitle with-icon">
+                            <span class="emoji">📋</span> Плановые поступления
+                        </span>
+                        <span class="badge-pill">3</span>
+                    </div>
+
+                    <div class="patient-card planned-card">
+                        <div class="patient-main">
+                            <div>
+                                <div class="patient-name">Новиков Сергей Владимирович</div>
+                                <div class="patient-tags">
+                                    <span class="tag">58 лет</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="status-badge status-planned">Плановое</span>
+                            </div>
+                        </div>
+                        <div class="patient-info">
+                            <div class="patient-diagnosis">
+                                Цель: Плановая операция на коленном суставе
+                            </div>
+                            <div class="patient-date">
+                                Запланировано: 18.11.2025
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="patient-card planned-card">
+                        <div class="patient-main">
+                            <div>
+                                <div class="patient-name">Федорова Мария Александровна</div>
+                                <div class="patient-tags">
+                                    <span class="tag">34 лет</span>
+                                </div>
+                            </div>
+                            <div>
+                                <span class="status-badge status-planned">Плановое</span>
+                            </div>
+                        </div>
+                        <div class="patient-info">
+                            <div class="patient-diagnosis">
+                                Цель: Обследование щитовидной железы
+                            </div>
+                            <div class="patient-date">
+                                Запланировано: 19.11.2025
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             <!-- персонал отделения -->
             <section class="card" style="margin-top:18px; margin-bottom:10px;">
@@ -1581,7 +1410,7 @@
 
             // показать нужный блок
             const target = tab.dataset.target; // past | present | future
-            document.querySelectorAll('.timeline-content').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.timeline-section').forEach(sec => sec.classList.remove('active'));
             const el = document.getElementById('timeline-' + target);
             if (el) el.classList.add('active');
         });
